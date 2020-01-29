@@ -109,7 +109,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
     public function getRepAcceptedBids()
     {
         $orders = $this->user->bids()->whereHas("order",function($query){
-            $query->whereIn("status",["Awaiting Payment", "Invoice Paid"]);
+            $query->whereIn("status",["Awaiting Payment", "Invoice Paid","Accepted"]);
         })->with(["order" => function ($query) {
             $query->has("orderConcrete")->with(["orderConcrete","message","user" => function ($query) {
                 $query->with(['detail' => function ($query) {
