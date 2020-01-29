@@ -38,7 +38,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
     {
         $order = new Order();
         //generate order id
-        $order->order_hash_id = Str::orderedUuid()->toString();
+        $order->order_hash_id = Str::random(8);
         $order->user_id = $this->user->id;
         $order->order_type = "concrete";
         $order->status = "Pending";
