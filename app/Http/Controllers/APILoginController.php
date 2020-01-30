@@ -94,7 +94,6 @@ class APILoginController extends Controller
                     if ($token = auth('api')->attempt(["email" => $user_details["email"], "password" => $user_details["password"]])) {
 
                         $user = auth('api')->user();
-
                         return response()->json([
                             'access_token' => $token,
                             'token_type' => 'bearer',
@@ -111,7 +110,7 @@ class APILoginController extends Controller
 //            return response()->json($e->errors(), 400);
         }
         catch (\Exception $e) {
-            return response()->json([$e->errors()], 400);
+            return response()->json([$e->getMessage()], 400);
         }
 
     }
