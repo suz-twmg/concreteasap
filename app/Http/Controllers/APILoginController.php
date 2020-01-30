@@ -83,7 +83,7 @@ class APILoginController extends Controller
                 'password' => 'required',
                 'confirm_password' => 'required|same:password',
                 'roles' => 'in:contractor,rep',
-                'photo' => 'mimes:jpeg,png|max:2048',
+//                'photo' => 'mimes:jpeg,png|max:2048',
             ]);
             if ($validator->validate()) {
                 $requests["email"] = strtolower($requests["email"]);
@@ -105,7 +105,7 @@ class APILoginController extends Controller
             }
 
         } catch (\Exception $e) {
-            return response()->json("There is some issue on server", 400);
+            return response()->json("$e->getMessage()", 400);
         }
 
     }
