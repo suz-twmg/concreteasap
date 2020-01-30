@@ -40,7 +40,7 @@ class ForgotPasswordController extends Controller
             $sent = $this->sendResetLinkEmail($request);
         }
         catch(\Exception $e){
-            return response()->json(["message"=>$e->errors()],400);
+            return response()->json(["message"=>$e->getMessage()],400);
         }
 
 
