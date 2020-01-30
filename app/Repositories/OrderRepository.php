@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Models\Bids\Bids;
 use App\Models\Order\Order;
 use App\Models\Order\orderConcrete;
-use App\Models\Order\orderConfirmation;
 use App\Models\Order\BidMessage;
 use App\Models\Order\orderMessage;
 use App\Models\Order\orderReview;
@@ -144,22 +143,22 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
     public function completeOrder($order_id, $quantity, $total, $message_quantity, $message_total, $review = [])
     {
         $order = Order::where("id", $order_id)->first();
-        $order_confirmation = orderConfirmation::where("order_id", $order_id)->first();
-        if (!$order_confirmation) {
-            $order_confirmation = new orderConfirmation();
-            $order_confirmation->order_id = $order_id;
-        }
+//        $order_confirmation = orderConfirmation::where("order_id", $order_id)->first();
+//        if (!$order_confirmation) {
+//            $order_confirmation = new orderConfirmation();
+//            $order_confirmation->order_id = $order_id;
+//        }
         if ($this->user->hasRole("contractor")) {
             //update order status
             $order->status = "Complete";
 
             //create or update confirmation
-            $order_confirmation->quantity = $quantity;
-            $order_confirmation->total = $total;
-            $order_confirmation->message_quantity = $message_quantity;
-            $order_confirmation->message_total = $message_total;
-            $order_confirmation->rep_quantity = 0;
-            $order_confirmation->rep_confirmation = false;
+//            $order_confirmation->quantity = $quantity;
+//            $order_confirmation->total = $total;
+//            $order_confirmation->message_quantity = $message_quantity;
+//            $order_confirmation->message_total = $message_total;
+//            $order_confirmation->rep_quantity = 0;
+//            $order_confirmation->rep_confirmation = false;
 //            $order_confirmation->message_quantity=
             //create new order review
             $order_review = new orderReview();
@@ -177,7 +176,6 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                 $bid->status = "Complete";
                 DB::beginTransaction();
                 $order->save();
-                $order_confirmation->save();
                 $bid->save();
                 $order_review->save();
                 if($order_message){
@@ -198,9 +196,6 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
             }
 
         } else if ($this->user->hasRole("rep")) {
-            $order_confirmation->rep_quantity = $quantity;
-            $order_confirmation->rep_confirmation = true;
-            $order_confirmation->save();
             return [
                 "user" => $order->user_id
             ];

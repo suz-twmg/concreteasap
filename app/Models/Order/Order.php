@@ -41,9 +41,9 @@ class Order extends Model
         return $this->hasOne(orderReview::class,"order_id","id");
     }
 
-    public function confirmation(){
-        return $this->hasOne(orderConfirmation::class,"order_id","id");
-    }
+//    public function confirmation(){
+//        return $this->hasOne(orderConfirmation::class,"order_id","id");
+//    }
 
     public function message(){
         return $this->hasMany(orderMessage::class,"order_id","id");
