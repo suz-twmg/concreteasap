@@ -61,6 +61,7 @@ class UserRepository implements Interfaces\UserRepositoryInterface
             // all good
         } catch (\Exception $e) {
             DB::rollback();
+            throw $e;
             // something went wrong
         }
 
