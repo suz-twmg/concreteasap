@@ -359,6 +359,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         $order = Order::find($order_id);
         $bid_message = $order->message()->create([
             "quantity" => $quantity,
+            "price"=>0,
             "status" => "Awaiting",
             "complete" => false,
         ]);
