@@ -105,7 +105,7 @@ class APILoginController extends Controller
             }
 
         } catch (\Exception $e) {
-            return response()->json($e->getMessage(), 400);
+            return response()->json("There is some issue on server", 400);
         }
 
     }
