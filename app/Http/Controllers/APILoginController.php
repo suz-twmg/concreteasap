@@ -68,47 +68,53 @@ class APILoginController extends Controller
      */
     public function register(Request $request)
     {
-        $roles = $request->get("roles");
-        $requests=$request->all();
-        $requests["email"]=strtolower($requests["email"]);
-        $validator = Validator::make($requests, [
-            'company' => 'required',
-            'abn' => 'required',
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|unique:users',
-            'phone' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'password' => 'required',
-            'confirm_password' => 'required|same:password',
-            'roles' => 'in:contractor,rep',
-            'photo' => 'mimes:jpeg,png|max:2048',
-        ]);
+        try{
+            $roles = $request->get("roles");
+            $requests=$request->all();
+            $requests["email"]=strtolower($requests["email"]);
+            $validator = Validator::make($requests, [
+                'company' => 'required',
+                'abn' => 'required',
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'email' => 'required|unique:users',
+                'phone' => 'required',
+                'city' => 'required',
+                'state' => 'required',
+                'password' => 'required',
+                'confirm_password' => 'required|same:password',
+                'roles' => 'in:contractor,rep',
+                'photo' => 'mimes:jpeg,png|max:2048',
+            ]);
 
 
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            return response()->json(['message' => "Please check the entered value.", "errors" => $errors], 400);
-        }
+            if ($validator->fails()) {
+                $errors = $validator->errors();
+                return response()->json(['message' => "Please check the entered value.", "errors" => $errors], 400);
+            }
 
-        $user_details = $request->only('email', 'password', 'first_name', 'last_name', 'phone', 'abn', 'company', 'state', 'city', 'roles', 'title');
+            $user_details = $request->only('email', 'password', 'first_name', 'last_name', 'phone', 'abn', 'company', 'state', 'city', 'roles', 'title');
 //        var_dump($request->file());
 //        die;
-        if ($this->user_repo->save($user_details, $request->file("photo"))) {
-            if ($token = auth('api')->attempt(["email" => $user_details["email"], "password" => $user_details["password"]])) {
+            if ($this->user_repo->save($user_details, $request->file("photo"))) {
+                if ($token = auth('api')->attempt(["email" => $user_details["email"], "password" => $user_details["password"]])) {
 
-                $user = auth('api')->user();
+                    $user = auth('api')->user();
 
-                return response()->json([
-                    'access_token' => $token,
-                    'token_type' => 'bearer',
-                    'expires_in' => auth('api')->factory()->getTTL() * 60,
-                    'roles' => $user->getRoleNames()
-                ]);
+                    return response()->json([
+                        'access_token' => $token,
+                        'token_type' => 'bearer',
+                        'expires_in' => auth('api')->factory()->getTTL() * 60,
+                        'roles' => $user->getRoleNames()
+                    ]);
+                }
+                return response()->json(['message' => 'Unauthorized'], 400);
             }
-            return response()->json(['message' => 'Unauthorized'], 400);
         }
+        catch(\Exception $e){
+            return response()->json($e->getMessage(),400);
+        }
+
     }
 
     /**
