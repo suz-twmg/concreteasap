@@ -85,6 +85,7 @@ class APILoginController extends Controller
             'roles' => 'in:contractor,rep',
             'photo' => 'mimes:jpeg,png|max:2048',
         ]);
+
         try {
             if ($validator->validate()) {
                 $requests["email"] = strtolower($requests["email"]);
@@ -110,7 +111,7 @@ class APILoginController extends Controller
             return response()->json($e->errors(), 400);
         }
         catch (\Exception $e) {
-            return response()->json($e->getFile(), 400);
+            return response()->json([$e->getTraceAsString()], 400);
         }
 
     }
