@@ -70,6 +70,7 @@ class APILoginController extends Controller
      */
     public function register(Request $request)
     {
+        $requests = $request->all();
         $validator = Validator::make($requests, [
             'company' => 'required',
             'abn' => 'required',
@@ -85,8 +86,6 @@ class APILoginController extends Controller
             'photo' => 'mimes:jpeg,png|max:2048',
         ]);
         try {
-            $requests = $request->all();
-
             if ($validator->validate()) {
                 $requests["email"] = strtolower($requests["email"]);
                 $user_details = $request->only('email', 'password', 'first_name', 'last_name', 'phone', 'abn', 'company', 'state', 'city', 'roles', 'title');
