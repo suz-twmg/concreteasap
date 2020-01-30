@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\JsonResponse;
@@ -38,7 +39,7 @@ class APILoginController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        $credentials["email"]=strtolower($credentials["email"]);
+        $credentials["email"] = strtolower($credentials["email"]);
 //        $credentials["email"]=strtolower($credentials["email"]);
         if ($token = auth('api')->attempt($credentials)) {
             $user = auth('api')->user();
@@ -68,10 +69,8 @@ class APILoginController extends Controller
      */
     public function register(Request $request)
     {
-        try{
-            $roles = $request->get("roles");
-            $requests=$request->all();
-            $requests["email"]=strtolower($requests["email"]);
+        try {
+            $requests = $request->all();
             $validator = Validator::make($requests, [
                 'company' => 'required',
                 'abn' => 'required',
@@ -86,33 +85,27 @@ class APILoginController extends Controller
                 'roles' => 'in:contractor,rep',
                 'photo' => 'mimes:jpeg,png|max:2048',
             ]);
+            if ($validator->validate()) {
+                $requests["email"] = strtolower($requests["email"]);
+                $user_details = $request->only('email', 'password', 'first_name', 'last_name', 'phone', 'abn', 'company', 'state', 'city', 'roles', 'title');
+                if ($this->user_repo->save($user_details, $request->file("photo"))) {
+                    if ($token = auth('api')->attempt(["email" => $user_details["email"], "password" => $user_details["password"]])) {
 
+                        $user = auth('api')->user();
 
-            if ($validator->fails()) {
-                $errors = $validator->errors();
-                return response()->json(['message' => "Please check the entered value.", "errors" => $errors], 400);
-            }
-
-            $user_details = $request->only('email', 'password', 'first_name', 'last_name', 'phone', 'abn', 'company', 'state', 'city', 'roles', 'title');
-//        var_dump($request->file());
-//        die;
-            if ($this->user_repo->save($user_details, $request->file("photo"))) {
-                if ($token = auth('api')->attempt(["email" => $user_details["email"], "password" => $user_details["password"]])) {
-
-                    $user = auth('api')->user();
-
-                    return response()->json([
-                        'access_token' => $token,
-                        'token_type' => 'bearer',
-                        'expires_in' => auth('api')->factory()->getTTL() * 60,
-                        'roles' => $user->getRoleNames()
-                    ]);
+                        return response()->json([
+                            'access_token' => $token,
+                            'token_type' => 'bearer',
+                            'expires_in' => auth('api')->factory()->getTTL() * 60,
+                            'roles' => $user->getRoleNames()
+                        ]);
+                    }
+                    return response()->json(['message' => 'Unauthorized'], 400);
                 }
-                return response()->json(['message' => 'Unauthorized'], 400);
             }
-        }
-        catch(\Exception $e){
-            return response()->json($e->getMessage(),400);
+
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
 
     }
@@ -125,13 +118,12 @@ class APILoginController extends Controller
     public function me()
     {
         $user = auth('api')->user();
-        if($user){
-            $user=$user->load('detail');
+        if ($user) {
+            $user = $user->load('detail');
             $user->roles = auth('api')->user()->getRoleNames();
-            return response()->json($user,200)->header('Content-type','application/json');
-        }
-        else{
-            return response()->json(array("msg"=>"Error on Verifying User"),200)->header('Content-type','application/json');
+            return response()->json($user, 200)->header('Content-type', 'application/json');
+        } else {
+            return response()->json(array("msg" => "Error on Verifying User"), 200)->header('Content-type', 'application/json');
         }
 
 
