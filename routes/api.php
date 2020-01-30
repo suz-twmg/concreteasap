@@ -24,7 +24,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get("test",function(OrderRepositoryInterface $orderRep,User $user,Order $order){
-    $user=App\Models\User::find(12);
+    $user=User::find(12);
     $user->password=Hash::make("twmg2020");
     var_dump($user->save());
 });
