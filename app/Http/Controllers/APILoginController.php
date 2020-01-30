@@ -110,7 +110,7 @@ class APILoginController extends Controller
             return response()->json($e->errors(), 400);
         }
         catch (\Exception $e) {
-            return response()->json($e->getMessage(), 400);
+            return response()->json($e->getFile(), 400);
         }
 
     }
