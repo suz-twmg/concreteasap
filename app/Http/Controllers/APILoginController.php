@@ -70,22 +70,23 @@ class APILoginController extends Controller
      */
     public function register(Request $request)
     {
+        $validator = Validator::make($requests, [
+            'company' => 'required',
+            'abn' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|unique:users',
+            'phone' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'password' => 'required',
+            'confirm_password' => 'required|same:password',
+            'roles' => 'in:contractor,rep',
+            'photo' => 'mimes:jpeg,png|max:2048',
+        ]);
         try {
             $requests = $request->all();
-            $validator = Validator::make($requests, [
-                'company' => 'required',
-                'abn' => 'required',
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'email' => 'required|unique:users',
-                'phone' => 'required',
-                'city' => 'required',
-                'state' => 'required',
-                'password' => 'required',
-                'confirm_password' => 'required|same:password',
-                'roles' => 'in:contractor,rep',
-                'photo' => 'mimes:jpeg,png|max:2048',
-            ]);
+
             if ($validator->validate()) {
                 $requests["email"] = strtolower($requests["email"]);
                 $user_details = $request->only('email', 'password', 'first_name', 'last_name', 'phone', 'abn', 'company', 'state', 'city', 'roles', 'title');
