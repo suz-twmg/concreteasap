@@ -5,6 +5,8 @@ use App\Models\Order\orderMessage;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -23,10 +25,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get("test",function(OrderRepositoryInterface $orderRep,User $user,Order $order){
-    $user=User::find(12);
-    $user->password=Hash::make("twmg2020");
-    var_dump($user->save());
+Route::get("test",function(App $app,OrderRepositoryInterface $orderRep,User $user,Order $order){
+    var_dump(App::environment());
 });
 
 
