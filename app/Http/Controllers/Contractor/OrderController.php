@@ -185,7 +185,7 @@ class OrderController extends Controller
             }
         }
         catch(\Exception $e){
-            return response()->json($validator->errors(), 400);
+            return response()->json($e->getMessage(), 400);
         }
 
     }
@@ -201,23 +201,26 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(), [
             'order_id' => 'required',
         ]);
-        if ($validator->validate()) {
-            $order_id = $request->get("order_id");
-            $user = $this->orderRep->confirmOrderDelivery($order_id);
-            if ($user) {
+        try{
+            if ($validator->validate()) {
+                $order_id = $request->get("order_id");
+                $user = $this->orderRep->confirmOrderDelivery($order_id);
+                if ($user) {
 //                var_dump($user);
-                $notification = [
-                    "msg" => "Order " . $order_id . " has been delivered.",
-                    "route" => "OrderStatus",
-                    "params" => array(
-                        "order_id" => $request->get("order_id")
-                    )
-                ];
-                Notification::send($user, new AppNotification($notification));
+                    $notification = [
+                        "msg" => "Order " . $order_id . " has been delivered.",
+                        "route" => "OrderStatus",
+                        "params" => array(
+                            "order_id" => $request->get("order_id")
+                        )
+                    ];
+                    Notification::send($user, new AppNotification($notification));
+                }
+                return response()->json(array("message" => "Order has been completed"), 200);
             }
-            return response()->json(array("message" => "Order has been completed"), 200);
-        } else {
-            return response()->json($validator->errors(), 400);
+        }
+        catch(\Exception $e){
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -248,11 +251,9 @@ class OrderController extends Controller
                     Notification::send($user, new AppNotification($notification));
                 }
                 return response()->json(array("message" => "Order has been cancelled"), 200);
-            } else {
-                return response()->json($validator->errors(), 400);
             }
         } catch (\Exception $e) {
-            return response()->json($validator->errors(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
