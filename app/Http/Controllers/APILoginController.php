@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Dotenv\Exception\ValidationException;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\JsonResponse;
@@ -83,7 +84,7 @@ class APILoginController extends Controller
                 'password' => 'required',
                 'confirm_password' => 'required|same:password',
                 'roles' => 'in:contractor,rep',
-//                'photo' => 'mimes:jpeg,png|max:2048',
+                'photo' => 'mimes:jpeg,png|max:2048',
             ]);
             if ($validator->validate()) {
                 $requests["email"] = strtolower($requests["email"]);
@@ -104,8 +105,12 @@ class APILoginController extends Controller
                 }
             }
 
-        } catch (\Exception $e) {
-            return response()->json("$e->getMessage()", 400);
+        }
+        catch(ValidationException $e){
+            return response()->json($e->errors(), 400);
+        }
+        catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
 
     }
