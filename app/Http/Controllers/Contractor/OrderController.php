@@ -160,7 +160,7 @@ class OrderController extends Controller
             'comment' => 'required'
         ]);
         try {
-            if ($validator->validate()) {
+            if (!$validator->validate()) {
                 $order_id = $request->get("order_id");
                 $quantity = $request->get("quantity");
                 $total = $request->get("total") ? $request->get("total") : 0;

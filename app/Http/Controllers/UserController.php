@@ -89,7 +89,7 @@ class UserController extends Controller
     }
 
     public function mark_read(Request $request){
-        $this->user->unreadNotifications()->where("id",$request->get("notification_id"))->update(["read_at"=>"now"]);
+        $this->user->unreadNotifications()->where("id",$request->get("notification_id"))->update(["read_at"=>now()]);
         return response()->json(["message"=>"Successfully removed"],200);
     }
 }
