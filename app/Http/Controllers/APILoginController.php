@@ -103,9 +103,9 @@ class APILoginController extends Controller
                     }
                     return response()->json(['message' => 'Unauthorized'], 400);
                 }
-                else{
-
-                }
+            }
+            else{
+                return response()->json([$validator->errors()], 400);
             }
 
         }
