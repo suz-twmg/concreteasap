@@ -87,7 +87,7 @@ class APILoginController extends Controller
 
         try {
             if($validator->fails()){
-                return response()->json([$validator->errors()], 400);
+                return response()->json(["error_msg"=>"Some error occured in registration","errors"=>$validator->errors()], 400);
             }
             $requests = $request->all();
             $requests["email"] = strtolower($requests["email"]);
