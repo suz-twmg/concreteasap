@@ -26,8 +26,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get("test",function(App $app,OrderRepositoryInterface $orderRep,User $user,Order $order){
-    $user=User::where("email","Leadsconcrete@hotmail.com")->delete();
-    var_dump($user);
+    var_dump( User::all());
 
 });
 
