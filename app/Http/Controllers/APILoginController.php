@@ -86,31 +86,26 @@ class APILoginController extends Controller
         ]);
 
         try {
-            if ($validator->validate()) {
-                $requests = $request->all();
-                $requests["email"] = strtolower($requests["email"]);
-                $user_details = $request->only('email', 'password', 'first_name', 'last_name', 'phone', 'abn', 'company', 'state', 'city', 'roles', 'title');
-                if ($this->user_repo->save($user_details, $request->file("photo"))) {
-                    if ($token = auth('api')->attempt(["email" => $user_details["email"], "password" => $user_details["password"]])) {
-
-                        $user = auth('api')->user();
-                        return response()->json([
-                            'access_token' => $token,
-                            'token_type' => 'bearer',
-                            'expires_in' => auth('api')->factory()->getTTL() * 60,
-                            'roles' => $user->getRoleNames()
-                        ]);
-                    }
-                    return response()->json(['message' => 'Unauthorized'], 400);
-                }
-            }
-            else{
+            if($validator->fails()){
                 return response()->json([$validator->errors()], 400);
             }
+            $requests = $request->all();
+            $requests["email"] = strtolower($requests["email"]);
+            $user_details = $request->only('email', 'password', 'first_name', 'last_name', 'phone', 'abn', 'company', 'state', 'city', 'roles', 'title');
+            if ($this->user_repo->save($user_details, $request->file("photo"))) {
+                if ($token = auth('api')->attempt(["email" => $user_details["email"], "password" => $user_details["password"]])) {
 
-        }
-        catch(ValidationException $e){
-//            return response()->json($e->errors(), 400);
+                    $user = auth('api')->user();
+                    return response()->json([
+                        'access_token' => $token,
+                        'token_type' => 'bearer',
+                        'expires_in' => auth('api')->factory()->getTTL() * 60,
+                        'roles' => $user->getRoleNames()
+                    ]);
+                }
+                return response()->json(['message' => 'Unauthorized'], 400);
+            }
+
         }
         catch (\Exception $e) {
             return response()->json([$e->getMessage()], 400);
