@@ -152,14 +152,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
             //update order status
             $order->status = "Complete";
 
-            //create or update confirmation
-//            $order_confirmation->quantity = $quantity;
-//            $order_confirmation->total = $total;
-//            $order_confirmation->message_quantity = $message_quantity;
-//            $order_confirmation->message_total = $message_total;
-//            $order_confirmation->rep_quantity = 0;
-//            $order_confirmation->rep_confirmation = false;
-//            $order_confirmation->message_quantity=
+         
             //create new order review
             $order_review = new orderReview();
             $order_review->order_id = $order_id;
@@ -183,7 +176,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                     $order_message->save();
                 }
                 DB::commit();
-
+                var_dump($bid);
                 $user = null;
                 if ($bid) {
                     $user = $bid->user;
