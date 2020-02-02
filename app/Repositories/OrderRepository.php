@@ -302,7 +302,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         $bid = Bids::find($bid_id);
         $bid->released=true;
         if ($bid->save()) {
-            return $bid->order();
+            return Order::find($bid->order_id);
         }
     }
 
