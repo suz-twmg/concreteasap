@@ -183,6 +183,9 @@ class OrderController extends Controller
 
                 return response()->json(array("message" => "Order has been completed"), 200);
             }
+            else {
+                return response()->json($validator->errors(), 400);
+            }
         }
         catch(\Exception $e){
             return response()->json($e->getMessage(), 400);
