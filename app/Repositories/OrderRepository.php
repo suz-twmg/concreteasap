@@ -176,7 +176,6 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                     $order_message->save();
                 }
                 DB::commit();
-                var_dump($bid);
                 $user = null;
                 if ($bid) {
                     $user = $bid->user;
