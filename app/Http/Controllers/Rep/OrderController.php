@@ -13,6 +13,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
+use App\User;
 
 class OrderController extends Controller
 {
@@ -102,7 +103,7 @@ class OrderController extends Controller
             $order=$this->order_repo->releaseOrder($request->get("bid_id"));
 
             if($order){
-                $user=$order->user();
+                //$user=$order->user();
                 $notification = [
                     "msg" => "Order has been released.",
                     "route" => "OrderStatus",
@@ -110,7 +111,7 @@ class OrderController extends Controller
                         "order_id" => $order["order_id"]
                     )
                 ];
-                Notification::send($user, new AppNotification($notification));
+                Notification::send(User::find($order->user_id), new AppNotification($notification));
             }
         } catch (\Exception $e) {
             return $this->handle_exception($e->getMessage());
