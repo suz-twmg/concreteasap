@@ -112,6 +112,7 @@ class OrderController extends Controller
                     )
                 ];
                 Notification::send(User::find($order->user_id), new AppNotification($notification));
+                return response()->json(array("msg" =>"Order Release has been sent"), 200);
             }
         } catch (\Exception $e) {
             return $this->handle_exception($e->getMessage());
