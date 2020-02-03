@@ -26,8 +26,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get("test",function(App $app,OrderRepositoryInterface $orderRep,User $user,Order $order){
-    var_dump( User::all());
-
+    var_dump(Order::all());
 });
 
 
