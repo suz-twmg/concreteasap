@@ -299,14 +299,20 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
 
     public function releaseOrder($bid_id)
     {
-        $bid = Bids::find($bid_id);
-        $bid->released=true;
-        if ($bid->save()) {
-            $order=Order::find($bid->order_id);
-            $order->status="Released";
-            $order->save();
-            return $order;
+        try{
+            $bid = Bids::find($bid_id);
+            $bid->released=true;
+            if ($bid->save()) {
+                $order=Order::find($bid->order_id);
+                $order->status="Released";
+                $order->save();
+                return $order;
+            }
         }
+        catch(\Exception $e){
+            return $e->getMessage();
+        }
+        
     }
 
     public function archiveOrder($order_id)
