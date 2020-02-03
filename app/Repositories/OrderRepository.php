@@ -300,14 +300,20 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
     public function releaseOrder($bid_id)
     {
         try{
-            $bid = Bids::find($bid_id);
-            $bid->released=true;
-            if ($bid->save()) {
-                $order=Order::find($bid->order_id);
-                $order->status="Released";
-                $order->save();
-                return $order;
+            if ($this->user->hasRole("rep")) {
+                $bid = Bids::find($bid_id);
+                $bid->released=true;
+                if ($bid->save()) {
+                    $order=Order::find($bid->order_id);
+                    $order->status="Released";
+                    $order->save();
+                    return $order;
+                }
             }
+            else{
+                return null;
+            }
+            
         }
         catch(\Exception $e){
             return $e->getMessage();
