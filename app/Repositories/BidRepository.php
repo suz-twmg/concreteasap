@@ -33,12 +33,24 @@ class BidRepository implements Interfaces\BidRepositoryInterface
         $bid->order_id = $order_id;
         $bid->user_id = $user_id;
         $bid->status = "Pending";
-        if ($date_delivery) {
-            $bid->date_delivery = $date_delivery;
+        
+        $order=Order::find($order_id);
+        
+        if($date_delivery==="time1"){
+            $date_delivery=$order->delivery_date;
+            $time_delivery=$order->time_preference1;
         }
-        if ($time_delivery) {
-            $bid->time_delivery = $time_delivery;
+        else if($date_delivery==="time2"){
+            $date_delivery=$order->delivery_date1;
+            $time_delivery=$order->time_preference2;
         }
+        else if($date_delivery==="time3"){
+            $date_delivery=$order->delivery_date2;
+            $time_delivery=$order->time_preference3;
+        }
+        
+        $bid->date_delivery = $date_delivery;
+        $bid->time_delivery = $time_delivery;
 
         $bid->save();
         $bid_transaction = new Bid_Transactions();
