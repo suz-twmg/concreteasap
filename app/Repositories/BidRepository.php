@@ -36,11 +36,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
         
         $order=Order::find($order_id);
         
-        $order_concrete=null;
-        
-        if($order->order_type==="concrete"){
-            $order_concrete=$order->orderConcrete();
-        }
+        $order_concrete=$order->orderConcrete;
         
         if(!is_null($order_concrete)){
             if($date_delivery==="time1"){
