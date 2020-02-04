@@ -82,7 +82,8 @@ class PaymentController extends Controller
                 ];
                 $date_delivery=isset($request["date_delivery"])?$request["date_delivery"]:"";
                 $time_delivery=isset($request["time_delivery"])?$request["time_delivery"]:"";
-
+                var_dump($date_delivery);
+                die;
                 if($this->bid_repo->save($request["price"],$request["order_id"],$this->user->id,$transaction,$date_delivery,$time_delivery)){
 
                     if($is_save_details){
