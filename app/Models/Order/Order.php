@@ -75,9 +75,11 @@ class Order extends Model
 
         if(!is_null($last_job)){
             $last_job_id=$last_job->job_id;
-            var_dump($last_job_id);
             $last_job_arr=explode("-",$last_job_id);
+            var_dump($last_job_arr);
             if(isset($job_arr[1])&&isset($job_arr[2])){
+                var_dump($last_job_arr[1]);
+                var_dump($last_job_arr[2]);
                 if($last_job_arr[1]===$month&&$last_job_arr[2]===$year){
                     $id=((int)$last_job_arr[0])+1;
                     $job_id=$id."-".$month."-".$year;
