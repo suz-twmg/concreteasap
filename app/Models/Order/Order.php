@@ -4,6 +4,7 @@ namespace App\Models\Order;
 
 use App\Models\Bids\Bids;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 use App\User;
@@ -62,5 +63,25 @@ class Order extends Model
     public function getRejectedBid(){
         $bid=$this->bids()->with(["order.orderConcrete"])->where("status","!=","Accepted")->first();
         return $bid;
+    }
+
+    private function generateCustomJobId(){
+        $current_date=Carbon::now();
+        $month=$current_date->format("m");
+        $year=$current_date->format("y");
+        $job_id="0-".$month."-".$year;
+
+        $last_job_id=$this->orderBy('id','desc')->first();
+
+        if(!is_null($last_job_id)){
+            $last_job_arr=explode("-",$last_job_id);
+            if(isset($job_arr[1])&&isset($job_arr[2])){
+                if($last_job_arr[1]===$month&&$last_job_arr[2]===$year){
+                    $id=((int)$last_job_arr[0])+1;
+                    $job_id=$id."-".$month."-".$year;
+                }
+            }
+        }
+        return $job_id;
     }
 }

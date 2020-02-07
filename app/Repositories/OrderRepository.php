@@ -33,6 +33,8 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
             "preference", "message_required", "urgency", "time_preference1", "time_preference2", "time_preference3", "time_deliveries"]; // add all columns from you table
     }
 
+
+
     public function createConcrete($order_request)
     {
         $order = new Order();
@@ -41,6 +43,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         $order->user_id = $this->user->id;
         $order->order_type = "concrete";
         $order->status = "Pending";
+        $order->job_id=Order::generateCustomJobId();
         $order->touch();
 
         // var_dump();
@@ -152,7 +155,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
             //update order status
             $order->status = "Complete";
 
-         
+
             //create new order review
             $order_review = new orderReview();
             $order_review->order_id = $order_id;
@@ -313,12 +316,12 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
             else{
                 return null;
             }
-            
+
         }
         catch(\Exception $e){
             return $e->getMessage();
         }
-        
+
     }
 
     public function archiveOrder($order_id)

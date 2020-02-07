@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Rep;
 use App\Notifications\AppNotification;
 use App\Repositories\Interfaces\BidRepositoryInterface;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
@@ -88,7 +89,7 @@ class BidController extends Controller
      * Store a newly created bid in storage.
      *
      * @param Request $request
-     * @return Response
+     * @return JsonResponse
      */
     public function updatePaymentMethod(Request $request){
         $validator = Validator::make($request->all(), [
