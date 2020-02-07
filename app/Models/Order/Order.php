@@ -65,7 +65,7 @@ class Order extends Model
         return $bid;
     }
 
-    private function generateCustomJobId(){
+    public function generateCustomJobId(){
         $current_date=Carbon::now();
         $month=$current_date->format("m");
         $year=$current_date->format("y");

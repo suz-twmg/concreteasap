@@ -43,7 +43,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         $order->user_id = $this->user->id;
         $order->order_type = "concrete";
         $order->status = "Pending";
-        $order->job_id=Order::generateCustomJobId();
+        $order->job_id=$order->generateCustomJobId();
         $order->touch();
 
         // var_dump();
