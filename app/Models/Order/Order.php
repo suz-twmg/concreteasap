@@ -71,7 +71,7 @@ class Order extends Model
         $year=$current_date->format("y");
         $job_id="0-".$month."-".$year;
 
-        $last_job=$this->orderBy('id','desc')->first();
+        $last_job=Order::orderBy('id','desc')->first();
 
         if(!is_null($last_job)){
             $last_job_id=$last_job->job_id;
