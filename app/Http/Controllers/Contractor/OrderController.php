@@ -294,7 +294,7 @@ class OrderController extends Controller
                 if ($order) {
                     $notification = [
                         "msg" => "Message has been requested.",
-                        "route" => "OrderStatus",
+                        "route" => "Rep View Message",
                         "params" => array(
                             "order_id" => $request->get("order_id")
                         )
