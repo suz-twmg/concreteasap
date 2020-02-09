@@ -98,17 +98,17 @@ class BidController extends Controller
         ]);
         try{
             if(!$validator->fails()){
-                $user=$this->bid_repo->updatePaymentMethod($request->get("bid_id"),$request->get("payment_method"));
-                if($user){
+                $order=$this->bid_repo->updatePaymentMethod($request->get("bid_id"),$request->get("payment_method"));
+                if($order){
                     $notification=[
                         "msg"=>"Your Order has been marked as paid.",
                         "route" => "DayOfPour",
                         "params" => array(
-                            "order_id"=>$request->get("order_id")
+                            "order_id"=>$order["id"]
                         )
                     ];
-                    if($user){
-                        Notification::send($user,new AppNotification($notification));
+                    if($order){
+                        Notification::send($order->user()->get(),new AppNotification($notification));
                         return response()->json(array("msg"=>"Notification has been sent to contractor."),200);
                     }
                 }

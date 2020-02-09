@@ -33,11 +33,11 @@ class BidRepository implements Interfaces\BidRepositoryInterface
         $bid->order_id = $order_id;
         $bid->user_id = $user_id;
         $bid->status = "Pending";
-        
+
         $order=Order::find($order_id);
-        
+
         $order_concrete=$order->orderConcrete;
-        
+
         if(!is_null($order_concrete)){
             if($date_delivery==="time1"){
                 $date_delivery=$order_concrete->delivery_date;
@@ -52,8 +52,8 @@ class BidRepository implements Interfaces\BidRepositoryInterface
                 $time_delivery=$order_concrete->time_preference3;
             }
         }
-        
-        
+
+
         $bid->date_delivery = $date_delivery;
         $bid->time_delivery = $time_delivery;
 
@@ -144,17 +144,17 @@ class BidRepository implements Interfaces\BidRepositoryInterface
 
     public function updatePaymentMethod(int $bid_id, string $payment_method)
     {
-        $user = null;
+        $order = null;
         $bid = Bids::find($bid_id);
         if ($bid) {
             //$bid->payment_type = $payment_method;
 //            $order=;
 //            $order->status="Invoice Paid";
             if ($bid->order()->update(["status" => "Paid"])) {
-                return $bid->order()->first()->user()->first();
+                return $bid->order()->get();
             }
         }
-        return $user;
+        return $order;
         // TODO: Implement updatePaymentMethod() method.
     }
 

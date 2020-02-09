@@ -108,7 +108,7 @@ class OrderController extends Controller
                     "msg" => "Order has been released.",
                     "route" => "OrderStatus",
                     "params" => array(
-                        "order_id" => $order["order_id"]
+                        "order_id" => $order["id"]
                     )
                 ];
                 Notification::send(User::find($order->user_id), new AppNotification($notification));
@@ -135,7 +135,7 @@ class OrderController extends Controller
                     "msg" => "Order Message has been updated.",
                     "route" => "OrderStatus",
                     "params" => array(
-                        "order_id" => $order["order_id"]
+                        "order_id" => $order["id"]
                     )
                 ];
                 Notification::send($user, new AppNotification($notification));
