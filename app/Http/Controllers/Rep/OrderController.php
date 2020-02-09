@@ -106,7 +106,7 @@ class OrderController extends Controller
                 //$user=$order->user();
                 $notification = [
                     "msg" => "Order has been released.",
-                    "route" => "Day of Pour",
+                    "route" => "DayofPour",
                     "params" => array(
                         "order_id" => $order["id"]
                     )
