@@ -55,7 +55,7 @@ class BidController extends Controller
                         "route"=>"Accepted Bid Detail",
                         "btn"=>["id"=>"VIEW_ORDER","text"=>"View Order"],
                         "params"=>array(
-                            "bid"=>$bid_data["bid"]->getAcceptedOrder()
+                            "bid_id"=>$bid_id
                         )
                     ];
                     Notification::send(User::find($bid_data["accepted_users"]),new AppNotification($notification));
@@ -65,7 +65,7 @@ class BidController extends Controller
                         "route" => "Previous Bid List",
                         "btn"=>["id"=>"VIEW_ORDER","text"=>"View Order"],
                         "params"=>array(
-                            "bid"=>$bid_data["bid"]->getRejectedOrder()
+                            "bid_id"=>$bid_id
                         )
                     ];
                     if($rejected_users->isNotEmpty()){
