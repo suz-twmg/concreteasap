@@ -133,7 +133,7 @@ class OrderController extends Controller
                 $user=$order->user()->get();
                 $notification = [
                     "msg" => "Order Message has been updated.",
-                    "route" => "OrderStatus",
+                    "route" => "DayOfPour",
                     "params" => array(
                         "order_id" => $order["id"]
                     )
