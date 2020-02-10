@@ -242,16 +242,16 @@ class OrderController extends Controller
         try {
             if ($validator->validate()) {
                 $order_id = $request->get("order_id");
-                $user = $this->orderRep->cancelOrder($order_id);
-                if ($user) {
+                $result = $this->orderRep->cancelOrder($order_id);
+                if (isset($result["user"])&&isset($result["bid_id"])) {
                     $notification = [
                         "msg" => "Order has been cancelled.",
-                        "route" => "OrderStatus",
+                        "route" => "PreviousOrderDetail",
                         "params" => array(
-                            "order_id" => $request->get("order_id")
+                            "bid_id" => $result["bid_id"]
                         )
                     ];
-                    Notification::send($user, new AppNotification($notification));
+                    Notification::send($result["user"], new AppNotification($notification));
                 }
                 return response()->json(array("message" => "Order has been cancelled"), 200);
             }

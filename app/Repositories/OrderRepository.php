@@ -217,7 +217,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         if ($this->user->hasRole("contractor")) {
             $user = $bid->user;
         }
-        return $user;
+        return ["user"=>$user,"bid_id"=>$bid["id"]];
     }
 
     public function confirmOrderDelivery($order_id)
