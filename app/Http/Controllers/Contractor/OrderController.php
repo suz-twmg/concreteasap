@@ -246,7 +246,7 @@ class OrderController extends Controller
                 if (isset($result["user"])&&isset($result["bid_id"])) {
                     $notification = [
                         "msg" => "Order has been cancelled.",
-                        "route" => "PreviousOrderDetail",
+                        "route" => "Previous Bid Detail",
                         "params" => array(
                             "bid_id" => $result["bid_id"]
                         )
