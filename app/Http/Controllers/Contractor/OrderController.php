@@ -325,11 +325,12 @@ class OrderController extends Controller
                 $response = $this->orderRep->updateMessageStatus($message_id, $status);
                 if($response){
                     $order=$response["order"];
+                    $bid=$order->getAcceptedBid();
                     $notification = [
                         "msg" => $response["message"],
                         "route" => "Rep View Message",
                         "params" => array(
-                            "order_id" => $order["id"]
+                            "bid_id" => $bid["id"]
                         )
                     ];
                     Notification::send($order->getAcceptedBidUser(), new AppNotification($notification));
