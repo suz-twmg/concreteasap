@@ -300,7 +300,7 @@ class OrderController extends Controller
                         )
                     ];
 
-                    Notification::send($order->user()->get(), new AppNotification($notification));
+                    Notification::send($order["user"], new AppNotification($notification));
                     return response()->json(array("message" => "Message has been requested", "order_message" => $order["order_message"]), 200);
                 } else {
                     return response()->json(array("message" => "Message has been requested"), 400);
