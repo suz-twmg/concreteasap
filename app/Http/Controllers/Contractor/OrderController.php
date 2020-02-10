@@ -291,7 +291,7 @@ class OrderController extends Controller
                 $order_id = $request->get("order_id");
                 $quantity = $request->get("quantity");
                 $order = $this->orderRep->messageOrder($order_id, $quantity);
-                $bid=$order->bid->get();
+                $bid=$order->bid()->get();
                 if ($order) {
                     $notification = [
                         "msg" => "Message has been requested.",
