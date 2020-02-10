@@ -151,7 +151,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
 //            $order=;
 //            $order->status="Invoice Paid";
             if ($bid->order()->update(["status" => "Paid"])) {
-                return $bid->order()->get();
+                return $bid->order();
             }
         }
         return $order;
