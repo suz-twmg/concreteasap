@@ -104,7 +104,7 @@ class BidController extends Controller
                         "msg"=>"Your Order has been marked as paid.",
                         "route" => "DayOfPour",
                         "params" => array(
-                            "order_id"=>$order["id"]
+                            "order_id"=>$order->get()["id"]
                         )
                     ];
                     if($order){
