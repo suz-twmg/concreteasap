@@ -184,7 +184,8 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                     $user = User::find($bid->user_id);
                 }
                 return [
-                    "user" => $user
+                    "user" => $user,
+                    "bid_id"=>$bid["id"]
                 ];
             } catch (Throwable $e) {
                 \DB::rollback();
