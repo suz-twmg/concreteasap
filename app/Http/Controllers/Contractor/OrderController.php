@@ -287,7 +287,7 @@ class OrderController extends Controller
             'quantity' => 'required'
         ]);
         try {
-            if (!$validator->fails()) {
+            if ($validator->validate()) {
                 $order_id = $request->get("order_id");
                 $quantity = $request->get("quantity");
                 $order = $this->orderRep->messageOrder($order_id, $quantity);
