@@ -240,7 +240,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                 }])->select(["id", "email"]);
             }])->where([
                 "status"=>"Accepted",
-                ["date_delivery","=",\Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d")]
+                ["date_delivery","!=",\Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d")]
             ]);
         }])->whereIn("status", ["Accepted", "Released", "Paid"])->orderBy("id", "DESC")->get();
     }
