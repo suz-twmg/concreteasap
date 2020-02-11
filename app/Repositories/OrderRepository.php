@@ -345,8 +345,8 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
 
     public function getDayOfPourOrders()
     {
-        $orders = $this->user->orders()->whereHas("bids", function ($query) {
-            $query->where("date_delivery", \Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d"));
+        return $this->user->orders()->whereHas("bids", function ($query) {
+            $query->where("date_delivery","=",\Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d"));
         })->with(["orderConcrete", "user", "bids" => function ($query) {
             $query->with(["user" => function ($query) {
                 $query->with(["detail" => function ($query) {
@@ -354,8 +354,6 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                 }])->select(["id", "email"]);
             }])->where("status", "Accepted");
         }])->whereIn("status", ["Accepted", "Released", "Paid"])->paginate(20);
-
-        return $orders;
     }
 
     public function messageOrder(int $order_id, float $quantity)
