@@ -347,7 +347,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
     {
         return $this->user->orders()->whereHas("orderConcrete")->whereHas("bids", function ($query) {
             $query->where("date_delivery","=",\Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d"));
-        })->with(["message","orderConcrete", "bids" => function ($query) {
+        })->with(["orderConcrete", "bids" => function ($query) {
             $query->with(["user" => function ($query) {
                 $query->with(["detail" => function ($query) {
                     $query->select(["user_id", "company", "first_name", "last_name", "phone_number", "profile_image", "abn"]);
