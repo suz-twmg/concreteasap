@@ -253,6 +253,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         }])->whereNotIn("id", Bids::where("user_id", "=", $this->user->id)->get(['order_id'])->toArray())
             ->whereNotIn("status", ["Accepted", "Released", "Paid", "Complete", "Cancelled", "archive"])
             ->orderBy("id", "DESC");
+
         $orders = $orders->paginate(25);
 //        $orders["sql"]=$orders->toSql();
         return $orders;
@@ -344,15 +345,15 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
 
     public function getDayOfPourOrders()
     {
-        return $this->user->orders()->whereHas("orderConcrete")->whereHas("bids", function ($q) {
-            return $q->where("date_delivery","=", \Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d"));
-        })->with(["message", "orderConcrete", "bids" => function ($query) {
+        return $this->user->orders()->whereHas("orderConcrete")->whereHas("bids", function ($query) {
+            $query->where("date_delivery","=",\Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d"));
+        })->with(["orderConcrete", "user", "bids" => function ($query) {
             $query->with(["user" => function ($query) {
                 $query->with(["detail" => function ($query) {
                     $query->select(["user_id", "company", "first_name", "last_name", "phone_number", "profile_image", "abn"]);
                 }])->select(["id", "email"]);
             }])->where("status", "Accepted");
-        }])->whereIn("status", ["Accepted", "Released", "Paid"])->orderBy("id", "DESC")->get();
+        }])->whereIn("status", ["Accepted", "Released", "Paid"])->paginate(20);
     }
 
     public function messageOrder(int $order_id, float $quantity)
