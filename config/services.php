@@ -49,4 +49,8 @@ return [
         'rest_api_key' => "MzcwYmIzMTgtMDYwYi00NzZlLWJkMGEtMTE3MTRmNTViYzAx"
     ],
 
+    'sendgrid' =>[
+        'api_key' => env('SENDGRID_API_KEY'),
+    ]
+
 ];
