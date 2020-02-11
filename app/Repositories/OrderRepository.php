@@ -347,13 +347,23 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
     {
         return $this->user->orders()->whereHas("orderConcrete")->whereHas("bids", function ($query) {
             $query->where("date_delivery","=",\Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d"));
-        })->with(["orderConcrete", "user", "bids" => function ($query) {
+        })->with(["message","orderConcrete", "bids" => function ($query) {
             $query->with(["user" => function ($query) {
                 $query->with(["detail" => function ($query) {
                     $query->select(["user_id", "company", "first_name", "last_name", "phone_number", "profile_image", "abn"]);
                 }])->select(["id", "email"]);
             }])->where("status", "Accepted");
-        }])->whereIn("status", ["Accepted", "Released", "Paid"])->paginate(20);
+        }])->whereIn("status", ["Accepted", "Released", "Paid"])->get();
+
+//        return $this->user->orders()->whereHas("orderConcrete")->whereHas("bids", function ($q) {
+//            return $q->where("date_delivery","!=", \Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d"));
+//        })->with(["message", "orderConcrete", "bids" => function ($query) {
+//            $query->with(["user" => function ($query) {
+//                $query->with(["detail" => function ($query) {
+//                    $query->select(["user_id", "company", "first_name", "last_name", "phone_number", "profile_image", "abn"]);
+//                }])->select(["id", "email"]);
+//            }])->where("status", "Accepted");
+//        }])->whereIn("status", ["Accepted", "Released", "Paid"])->orderBy("id", "DESC")->get();
     }
 
     public function messageOrder(int $order_id, float $quantity)
