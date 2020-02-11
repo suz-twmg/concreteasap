@@ -34,7 +34,7 @@ Route::get("test", function (App $app, OrderRepositoryInterface $orderRep, User 
             }])->select(["id", "email"]);
         }])->where("status", "Accepted");
     }])->whereHas("bids", function ($query) {
-        $query->where("date_delivery", \Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d"));
+        $query->where("date_delivery","=", \Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d"));
     })->whereIn("status", ["Accepted", "Released", "Paid"])->paginate(20);
     var_dump($orders);
 });

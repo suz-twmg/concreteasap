@@ -43,10 +43,7 @@ class ForgotPasswordController extends Controller
             return response()->json(["message"=>$e->getMessage()],400);
         }
 
-
-        return ($sent)
-            ? response()->json(['message'=>'Please check the email to get code'],200)
-            : response()->json(['message'=>'Failed to change password for this email'],400);
+        return response()->json(['message'=>'Please check the email to get code'],200);
 
     }
 
