@@ -28,11 +28,10 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
     public function __construct()
     {
         $this->user = auth('api')->user();
-        $this->custom_columns = ["id", "order_id","post_code","state","suburb", "type", "placement_type", "mpa", "agg", "slump", "acc", "quantity", "delivery_date",
+        $this->custom_columns = ["id", "order_id", "post_code", "state", "suburb", "type", "placement_type", "mpa", "agg", "slump", "acc", "quantity", "delivery_date",
             "delivery_date1", "delivery_date2", "special_instructions", "delivery_instructions", "colours",
             "preference", "message_required", "urgency", "time_preference1", "time_preference2", "time_preference3", "time_deliveries"]; // add all columns from you table
     }
-
 
 
     public function createConcrete($order_request)
@@ -43,7 +42,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         $order->user_id = $this->user->id;
         $order->order_type = "concrete";
         $order->status = "Pending";
-        $order->job_id=$order->generateCustomJobId();
+        $order->job_id = $order->generateCustomJobId();
         $order->touch();
 
         // var_dump();
@@ -51,8 +50,8 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         $order_concrete = new orderConcrete();
         $order_concrete->address = isset($order_request["address"]) ? $order_request["address"] : "";
         $order_concrete->suburb = $order_request["suburb"];
-        $order_concrete->post_code=isset($order_request["post_code"])?$order_request["post_code"]:"";
-        $order_concrete->state=isset($order_request["state"])?$order_request["state"]:"";
+        $order_concrete->post_code = isset($order_request["post_code"]) ? $order_request["post_code"] : "";
+        $order_concrete->state = isset($order_request["state"]) ? $order_request["state"] : "";
         $order_concrete->type = $order_request["type"];
         $order_concrete->mpa = $order_request["mpa"];
         $order_concrete->agg = $order_request["agg"];
@@ -163,7 +162,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
             $order_review->rating = $review["rating"];
             //complete order message
             $order_message = orderMessage::find($order_id);
-            if($order_message){
+            if ($order_message) {
                 $order_message->complete = true;
             }
 
@@ -174,8 +173,8 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                 $order->save();
                 $bid->save();
                 $order_review->save();
-                if($order_message){
-                    $order_message->status="Complete";
+                if ($order_message) {
+                    $order_message->status = "Complete";
                     $order_message->save();
                 }
                 DB::commit();
@@ -185,7 +184,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                 }
                 return [
                     "user" => $user,
-                    "bid_id"=>$bid["id"]
+                    "bid_id" => $bid["id"]
                 ];
             } catch (Throwable $e) {
                 \DB::rollback();
@@ -217,7 +216,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         if ($this->user->hasRole("contractor")) {
             $user = $bid->user;
         }
-        return ["user"=>$user,"bid_id"=>$bid["id"]];
+        return ["user" => $user, "bid_id" => $bid["id"]];
     }
 
     public function confirmOrderDelivery($order_id)
@@ -233,15 +232,14 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
 
     public function getAcceptedOrders()
     {
-        return $this->user->orders()->whereHas("orderConcrete")->with(["message", "orderConcrete", "bids" => function ($query) {
+        return $this->user->orders()->whereHas("orderConcrete")->whereHas("bids", function ($q) {
+            return $q->where("date_delivery","!=", \Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d"));
+        })->with(["message", "orderConcrete", "bids" => function ($query) {
             $query->with(["user" => function ($query) {
                 $query->with(["detail" => function ($query) {
                     $query->select(["user_id", "company", "first_name", "last_name", "phone_number", "profile_image", "abn"]);
                 }])->select(["id", "email"]);
-            }])->where([
-                "status"=>"Accepted",
-                ["date_delivery","!=",\Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d")]
-            ]);
+            }])->where("status", "Accepted");
         }])->whereIn("status", ["Accepted", "Released", "Paid"])->orderBy("id", "DESC")->get();
     }
 
@@ -289,7 +287,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
     public function getRepAcceptedOrders()
     {
         $orders = $this->user->bids()->whereHas("order", function ($query) {
-            $query->whereIn("status", ["Released", "Paid","Accepted"]);
+            $query->whereIn("status", ["Released", "Paid", "Accepted"]);
         })->with(["order" => function ($query) {
             $query->has("orderConcrete")->with(["orderConcrete", "user" => function ($query) {
                 $query->with(['detail' => function ($query) {
@@ -306,23 +304,21 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
 
     public function releaseOrder($bid_id)
     {
-        try{
+        try {
             if ($this->user->hasRole("rep")) {
                 $bid = Bids::find($bid_id);
-                $bid->released=true;
+                $bid->released = true;
                 if ($bid->save()) {
-                    $order=Order::find($bid->order_id);
-                    $order->status="Released";
+                    $order = Order::find($bid->order_id);
+                    $order->status = "Released";
                     $order->save();
                     return $order;
                 }
-            }
-            else{
+            } else {
                 return null;
             }
 
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
 
@@ -368,7 +364,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         $order = Order::find($order_id);
         $bid_message = $order->message()->create([
             "quantity" => $quantity,
-            "price"=>0,
+            "price" => 0,
             "status" => "Awaiting",
             "complete" => false,
         ]);
@@ -376,37 +372,37 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         if ($order->message()->save($bid_message)) {
             $user = $order->getAcceptedBidUser();
         }
-        return ["user" => $user, "order_message" =>$order->message()->get(),"bid"=>$order->getAcceptedBid()];
+        return ["user" => $user, "order_message" => $order->message()->get(), "bid" => $order->getAcceptedBid()];
     }
 
     public function setMessagePrice(int $message_id, float $price)
     {
         $order = null;
-        try{
+        try {
             $message = orderMessage::findorFail($message_id);
-            $message->price=$price;
+            $message->price = $price;
             $message->touch();
             $message->save();
             return $message;
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
 
-    public function updateMessageStatus(int $message_id,string $status){
+    public function updateMessageStatus(int $message_id, string $status)
+    {
         $user = null;
-        try{
+        try {
             $order_message = orderMessage::findOrFail($message_id);
             if ($order_message) {
-                $order_message->status=$status;
+                $order_message->status = $status;
                 $order_message->save();
 //                $user=$order_message->getAcceptedBidUser();
             }
-            $message=$status==="Accepted"?"Message has been accepted":"Message has been rejected";
-            return ["order" =>Order::find($order_message->order_id), "message" =>$message];
+            $message = $status === "Accepted" ? "Message has been accepted" : "Message has been rejected";
+            return ["order" => Order::find($order_message->order_id), "message" => $message];
 
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
 
