@@ -238,7 +238,10 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                 $query->with(["detail" => function ($query) {
                     $query->select(["user_id", "company", "first_name", "last_name", "phone_number", "profile_image", "abn"]);
                 }])->select(["id", "email"]);
-            }])->where("status", "Accepted");
+            }])->where([
+                "status"=>"Accepted",
+                ["date_delivery","=",\Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d")]
+            ]);
         }])->whereIn("status", ["Accepted", "Released", "Paid"])->orderBy("id", "DESC")->get();
     }
 
