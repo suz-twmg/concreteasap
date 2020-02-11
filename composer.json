@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.0",
+        "ext-json": "*",
         "barryvdh/laravel-cors": "^0.11.3",
         "berkayk/onesignal-laravel": "^1.0",
         "braintree/braintree_php": "^3.40",
@@ -18,11 +19,10 @@
         "laravel/framework": "6.0.*",
         "laravel/tinker": "^1.0",
         "nao-pon/flysystem-google-drive": "~1.1",
-        "stripe/stripe-php": "^7.2",
-        "tymon/jwt-auth": "1.0.*",
         "rebing/graphql-laravel": "*",
-        "ext-ftp": "*",
-        "ext-json": "*"
+        "s-ichikawa/laravel-sendgrid-driver": "^2.1",
+        "stripe/stripe-php": "^7.2",
+        "tymon/jwt-auth": "1.0.*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

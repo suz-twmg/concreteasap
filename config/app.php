@@ -177,6 +177,7 @@ return [
         App\Providers\CustomPasswordResetServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
+        Sichikawa\LaravelSendgridDriver\SendgridTransportServiceProvider::class
 //        Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider::class,
     ],
 
