@@ -212,9 +212,9 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         } catch (Throwable $e) {
             \DB::rollback();
         }
-        $user = $order->user;
+        $user = $order->user();
         if ($this->user->hasRole("contractor")) {
-            $user = $bid->user;
+            $user = $bid->user();
         }
         return ["user" => $user, "bid_id" => $bid["id"]];
     }
@@ -225,8 +225,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         $order = Order::find($order_id);
         $order->confirm_delivery = true;
         if ($order->save()) {
-            $bid_user = $order->getAcceptedBidUser();
-            return $bid_user;
+            return $order->getAcceptedBidUser();
         }
     }
 
