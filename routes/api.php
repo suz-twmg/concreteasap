@@ -26,17 +26,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get("test", function (App $app, OrderRepositoryInterface $orderRep, User $user, Order $order) {
-    $user = User::find(7);
-    $orders=$user->orders()->with(["orderConcrete", "user", "bids" => function ($query) {
-        $query->with(["user" => function ($query) {
-            $query->with(["detail" => function ($query) {
-                $query->select(["user_id", "company", "first_name", "last_name", "phone_number", "profile_image", "abn"]);
-            }])->select(["id", "email"]);
-        }])->where("status", "Accepted");
-    }])->whereHas("bids", function ($query) {
-        $query->where("date_delivery","=", \Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d"));
-    })->whereIn("status", ["Accepted", "Released", "Paid"])->paginate(20);
-    var_dump($orders);
+    $order = Order::find(83);
+    var_dump($order->user);
 });
 
 

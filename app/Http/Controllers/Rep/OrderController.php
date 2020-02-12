@@ -75,12 +75,12 @@ class OrderController extends Controller
                 'order_id'=>'required'
             ]);
             if($validator->validate()){
-                $user=$this->order_repo->cancelOrder($request->get("order_id"));
-                if($user){
+                $response=$this->order_repo->cancelOrder($request->get("order_id"));
+                if($response){
                     $notification = [
                         "msg" => "Order has been cancelled.",
                     ];
-                    Notification::send($user, new AppNotification($notification));
+                    Notification::send($response["user"], new AppNotification($notification));
                 }
                 return response()->json(array("msg" =>"Order has been cancelled"), 200);
             }
