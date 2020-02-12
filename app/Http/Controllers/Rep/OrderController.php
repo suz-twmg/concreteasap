@@ -78,7 +78,7 @@ class OrderController extends Controller
                 $response=$this->order_repo->cancelOrder($request->get("order_id"));
                 if($response){
                     $notification = [
-                        "route"=>"ViewOrderDetail",
+                        "route"=>"Pending Order",
                         "msg" => "Order has been cancelled.",
                         "params"=>array(
                             "order_id"=>$request->get("order_id")
