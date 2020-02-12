@@ -2,12 +2,14 @@
 
 use App\Models\Order\Order;
 use App\Models\Order\orderMessage;
+use App\Notifications\AppNotification;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 /*
@@ -28,6 +30,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get("test", function (App $app, OrderRepositoryInterface $orderRep, User $user, Order $order) {
     $order = Order::find(83);
     var_dump($order->user);
+    $notification = [
+        "msg" => "Order has been cancelled.",
+    ];
+    Notification::send($order->user, new AppNotification($notification));
 });
 
 
