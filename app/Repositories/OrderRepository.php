@@ -212,9 +212,8 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         } catch (Throwable $e) {
             \DB::rollback();
         }
-        $user = $order->user;
-        var_dump($user);
-        die;
+        $user = $order->user()->get();
+
         if ($this->user->hasRole("contractor")) {
             $user = $bid->user;
         }
