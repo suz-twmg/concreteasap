@@ -345,7 +345,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
 
     public function getDayOfPourOrders()
     {
-        $orders = $this->user->orders()->with(["orderConcrete", "user", "bids" => function ($query) {
+        $orders = $this->user->orders()->with(["orderConcrete","message","user", "bids" => function ($query) {
             $query->with(["user" => function ($query) {
                 $query->with(["detail" => function ($query) {
                     $query->select(["user_id", "company", "first_name", "last_name", "phone_number", "profile_image", "abn"]);

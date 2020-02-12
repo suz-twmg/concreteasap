@@ -87,8 +87,7 @@ class UserRepository implements Interfaces\UserRepositoryInterface
     public function getOrderUser(int $order_id)
     {
         $order = Order::find($order_id);
-        $order_user = $order->user()->first();
-        return $order_user;
+        return $order->user()->first();
     }
 
     public function removeDevice(int $user_id)
