@@ -130,7 +130,7 @@ class OrderController extends Controller
                 $price=$request->get("price");
                 $message=$this->order_repo->setMessagePrice($message_id,$price);
                 $order=Order::find($message->order_id);
-                $user=$order->user;
+                $user=$order->user()->first();
                 $notification = [
                     "msg" => "Order Message has been updated.",
                     "route" => "Order Message",
