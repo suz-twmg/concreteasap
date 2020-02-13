@@ -119,7 +119,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
     public function getRepPreviousBids()
     {
         return $this->user->bids()->with(["order" => function ($query) {
-            $query->with(["orderConcrete"])->whereIn("status", ["Complete", "Cancelled"])->orderBy("id", "DESC")->get();
+            $query->with(["orderConcrete"])->orderBy("id", "DESC")->get();
         }])->whereIn("status", ["Complete", "Cancelled"])->paginate(25);
     }
 
