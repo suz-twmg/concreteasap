@@ -149,7 +149,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function getContractorOrders($status){
-        $this->orders()->whereHas("orderConcrete")->with(["orderConcrete", "bids" => function ($query) {
+        return $this->orders()->whereHas("orderConcrete")->with(["orderConcrete", "bids" => function ($query) {
             $query->with(["user" => function ($query) {
                 $query->with(["detail" => function ($query) {
                     $query->select("user_id", "company")->get();
