@@ -173,7 +173,7 @@ class OrderController extends Controller
                 if (!is_null($result["user"])) {
                     $notification = [
                         "msg" => "Order " . $order_id . " has been completed.",
-                        "route" => "Previous Bid Detail",
+                        "route" => "Previous Bid List",
                         "params" => array(
                             "bid_id" => $result["bid_id"]
                         )
