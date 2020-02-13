@@ -343,5 +343,14 @@ class OrderController extends Controller
         }
     }
 
+    public function getPreviousOrders(){
+        try{
+            return $this->orderRep->getContractorPreviousOrders();
+        }
+        catch(\Exception $e){
+            return response()->json(["msg"=>$e->getMessage()],400);
+        }
+    }
+
 
 }

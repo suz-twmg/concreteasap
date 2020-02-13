@@ -132,7 +132,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         }])->whereIn("status",["Pending"])->orderBy('id', 'DESC')->get();
     }
 
-    public function getContractorOrderHistory(){
+    public function getContractorPreviousOrders(){
         return $this->user->getContractorOrders(["Completed","Cancelled"]);
     }
 

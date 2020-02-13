@@ -75,6 +75,7 @@ Route::group([
     Route::get('orders/{id}/bids', 'Contractor\BidController@getOrderBid');
     Route::get('order/get_accepted_orders', 'Contractor\OrderController@getAcceptedOrders');
     Route::get('order/getAllDayOfPour', 'Contractor\OrderController@getAllDayOfPour');
+    Route::get("orders/previous","Contractor\OrderController@getPreviousOrders");
 
     Route::post('order/accept', "Contractor\BidController@acceptOrderBid");
     Route::post('order/reject', "Contractor\BidController@rejectOrderBid");
