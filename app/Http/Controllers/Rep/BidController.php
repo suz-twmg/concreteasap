@@ -113,6 +113,9 @@ class BidController extends Controller
                         Notification::send($order->user()->get(),new AppNotification($notification));
                         return response()->json(array("msg"=>"Notification has been sent to contractor."),200);
                     }
+                    else{
+                        return response()->json(array("msg"=>"There is some issue in the server."),400);
+                    }
                 }
             }
 
