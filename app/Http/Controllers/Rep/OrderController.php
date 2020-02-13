@@ -134,7 +134,7 @@ class OrderController extends Controller
             if($validator->validate()){
                 $message_id=$request->get("message_id");
                 $price=$request->get("price");
-                $message=$this->order_repo->setMessagePrice($message_id,$price);
+                $result=$this->order_repo->setMessagePrice($message_id,$price);
                 $message=$result["message"];
                 $order=Order::find($message->order_id);
                 $user=$order->user()->first();
