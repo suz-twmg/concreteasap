@@ -123,13 +123,11 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
 
     public function getUserConcreteOrder()
     {
-        return $this->user->orders()->whereHas("orderConcrete")->with(["orderConcrete", "bids" => function ($query) {
-            $query->with(["user" => function ($query) {
-                $query->with(["detail" => function ($query) {
-                    $query->select("user_id", "company")->get();
-                }])->select("id")->get();
-            }])->where("status", "!=", "Rejected");
-        }])->whereNotIn("status", ["Accepted", "Released", "Paid", "archive"])->orderBy('id', 'DESC')->get();
+        return $this->user->getContractorOrders("Pending");
+    }
+
+    public function getContractorOrderHistory(){
+        return $this->user->getContractorOrders(["Completed","Cancelled"]);
     }
 
     public function getPendingOrders()

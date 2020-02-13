@@ -42,10 +42,6 @@ class Order extends Model
         return $this->hasOne(orderReview::class,"order_id","id");
     }
 
-//    public function confirmation(){
-//        return $this->hasOne(orderConfirmation::class,"order_id","id");
-//    }
-
     public function message(){
         return $this->hasMany(orderMessage::class,"order_id","id");
     }
@@ -63,6 +59,10 @@ class Order extends Model
     public function getRejectedBid(){
         $bid=$this->bids()->with(["order.orderConcrete"])->where("status","!=","Accepted")->first();
         return $bid;
+    }
+
+    public function getContractorPendingOrders(User $user){
+
     }
 
     public function generateCustomJobId(){

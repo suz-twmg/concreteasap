@@ -98,13 +98,15 @@ class BidController extends Controller
         ]);
         try{
             if(!$validator->fails()){
-                $order=$this->bid_repo->updatePaymentMethod($request->get("bid_id"),$request->get("payment_method"));
-                if($order){
+                $result=$this->bid_repo->updatePaymentMethod($request->get("bid_id"),$request->get("payment_method"));
+                if(isset($result["order"])){
+                    $order=$result["order"];
                     $notification=[
                         "msg"=>"Your Order has been marked as paid.",
                         "route" => "DayOfPour",
                         "params" => array(
-                            "order_id"=>$order->id
+                            "order_id"=>$order->id,
+                            "order_type"=>$result["order_type"]
                         )
                     ];
                     if($order){

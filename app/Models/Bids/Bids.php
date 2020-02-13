@@ -3,6 +3,7 @@
 namespace App\Models\Bids;
 
 use App\Models\Order\BidMessage;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 use App\User;
@@ -14,6 +15,7 @@ class Bids extends Model
     protected $hidden = [
         "user_id"
     ];
+
     //
     public function order(){
         return $this->belongsTo('App\Models\Order\Order');
@@ -29,5 +31,9 @@ class Bids extends Model
 
     public function getRejectedOrder(){
         return $this->with("order.orderConcrete");
+    }
+
+    public function getOrderType(){
+        return $this->date_delivery===\Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d")?"pour_orders":"accepted_orders";
     }
 }
