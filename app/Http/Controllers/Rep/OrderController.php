@@ -104,15 +104,17 @@ class OrderController extends Controller
     public function releaseOrder(Request $request)
     {
         try {
-            $order=$this->order_repo->releaseOrder($request->get("bid_id"));
+            $result=$this->order_repo->releaseOrder($request->get("bid_id"));
 
-            if($order){
+            if($result["order"]){
+                $order=$result["order"];
                 //$user=$order->user();
                 $notification = [
                     "msg" => "Order has been released.",
                     "route" => "DayOfPour",
                     "params" => array(
-                        "order_id" => $order["id"]
+                        "order_id" => $order["id"],
+                        "order_type"=>$result["order_type"]
                     )
                 ];
                 Notification::send(User::find($order->user_id), new AppNotification($notification));
@@ -132,14 +134,16 @@ class OrderController extends Controller
             if($validator->validate()){
                 $message_id=$request->get("message_id");
                 $price=$request->get("price");
-                $message=$this->order_repo->setMessagePrice($message_id,$price);
+                $result=$this->order_repo->setMessagePrice($message_id,$price);
+                $message=$result["message"];
                 $order=Order::find($message->order_id);
                 $user=$order->user()->first();
                 $notification = [
                     "msg" => "Order Message has been updated.",
                     "route" => "Order Message",
                     "params" => array(
-                        "order_id" => $order["id"]
+                        "order_id" => $order["id"],
+                        "order_type"=>$result["message"]
                     )
                 ];
                 Notification::send($user, new AppNotification($notification));

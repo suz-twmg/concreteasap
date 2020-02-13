@@ -316,7 +316,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                     $order = Order::find($bid->order_id);
                     $order->status = "Released";
                     $order->save();
-                    return $order;
+                    return ["order"=>$order,"order_type"=>$bid->getOrderType()];
                 }
             } else {
                 return null;
@@ -387,7 +387,8 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
             $message->price = $price;
             $message->touch();
             $message->save();
-            return $message;
+            $bid= Order::find($message->order_id)->getAcceptedBid();
+            return ["message"=>$message,"order_type"=>!is_null($bid)?$bid->getOrderType():null];
         } catch (\Exception $e) {
             return $e->getMessage();
         }
@@ -401,10 +402,10 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
             if ($order_message) {
                 $order_message->status = $status;
                 $order_message->save();
-//                $user=$order_message->getAcceptedBidUser();
             }
+            $order= Order::find($order_message->order_id);
             $message = $status === "Accepted" ? "Message has been accepted" : "Message has been rejected";
-            return ["order" => Order::find($order_message->order_id), "message" => $message];
+            return ["order" =>$order, "message" => $message];
 
         } catch (\Exception $e) {
             return $e->getMessage();
