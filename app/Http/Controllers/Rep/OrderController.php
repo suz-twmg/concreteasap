@@ -134,7 +134,7 @@ class OrderController extends Controller
             if($validator->validate()){
                 $message_id=$request->get("message_id");
                 $price=$request->get("price");
-                $result=$this->order_repo->setMessagePrice($message_id,$price);
+                $message=$this->order_repo->setMessagePrice($message_id,$price);
                 $message=$result["message"];
                 $order=Order::find($message->order_id);
                 $user=$order->user()->first();
@@ -143,7 +143,7 @@ class OrderController extends Controller
                     "route" => "Order Message",
                     "params" => array(
                         "order_id" => $order["id"],
-                        "order_type"=>$result["message"]
+                        "order_type"=>$result["order_type"]
                     )
                 ];
                 Notification::send($user, new AppNotification($notification));
