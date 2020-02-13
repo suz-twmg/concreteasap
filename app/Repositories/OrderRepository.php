@@ -133,7 +133,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
     }
 
     public function getContractorPreviousOrders(){
-        return $this->user->getContractorOrders(["Completed","Cancelled"]);
+        return $this->user->getContractorOrders(["Complete","Cancelled"]);
     }
 
     public function getPendingOrders()
