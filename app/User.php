@@ -155,7 +155,7 @@ class User extends Authenticatable implements JWTSubject
                     $query->select("user_id", "company")->get();
                 }])->select("id")->get();
             }])->where("status", "!=", "Rejected");
-        }])->whereNotIn("status",$status)->orderBy('id', 'DESC')->get();
+        }])->whereIn("status",$status)->orderBy('id', 'DESC')->get();
     }
 
 //    public function setEmailAttribute($value)
