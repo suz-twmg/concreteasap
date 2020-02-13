@@ -301,7 +301,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                     "email"
                 ]);
             }]);
-        }])->where("status", "Accepted")->orderBy("id", "DESC")->paginate(25);
+        }])->where("status", "Accepted")->orderBy("id", "DESC")->get();
         return $orders;
         // TODO: Implement getRepAcceptedOrders() method.
     }
@@ -357,7 +357,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
             }])->where("status", "Accepted");
         }])->whereHas("bids", function ($query) {
             $query->where("date_delivery", \Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d"));
-        })->whereIn("status", ["Accepted", "Released", "Paid"])->paginate(20);
+        })->whereIn("status", ["Accepted", "Released", "Paid"])->get();
 
         return $orders;
     }
