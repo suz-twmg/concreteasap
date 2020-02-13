@@ -28,12 +28,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get("test", function (App $app, OrderRepositoryInterface $orderRep, User $user, Order $order) {
-    $order = Order::find(83);
-    var_dump($order->user);
-    $notification = [
-        "msg" => "Order has been cancelled.",
-    ];
-    Notification::send($order->user, new AppNotification($notification));
+//     $order = Order::find(83);
+    var_dump(\Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d"));
 });
 
 
