@@ -387,8 +387,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
             $message->price = $price;
             $message->touch();
             $message->save();
-            $bid= Order::find($message->order_id)->getAcceptedBid();
-            return ["message"=>$message,"order_type"=>!is_null($bid)?$bid->getOrderType():null];
+            return ["message"=>$message,"order_type"=>"pour_orders"];
         } catch (\Exception $e) {
             return $e->getMessage();
         }
