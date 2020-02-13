@@ -123,7 +123,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
 
     public function getUserConcreteOrder()
     {
-        return $this->user->getContractorOrders("Pending");
+        return $this->user->getContractorOrders(["Pending"]);
     }
 
     public function getContractorOrderHistory(){
