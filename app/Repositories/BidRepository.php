@@ -136,7 +136,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
                     "email"
                 ]);
             }]);
-        }])->where("status", "Accepted")->orderBy("id", "DESC")->paginate(25);
+        }])->where("status", "Accepted")->orderBy("id", "DESC")->get();
 
         return $orders;
         // TODO: Implement getRepAcceptedOrders() method.
