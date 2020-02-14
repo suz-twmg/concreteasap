@@ -35,8 +35,8 @@ class ForgotPasswordController extends Controller
 //    public function forgot
     public function getResetToken(Request $request)
     {
-        $this->validate($request, ['email' => 'required|email']);
         try{
+            $this->validate($request, ['email' => 'required|email']);
             $sent = $this->sendResetLinkEmail($request);
         }
         catch(\Exception $e){
