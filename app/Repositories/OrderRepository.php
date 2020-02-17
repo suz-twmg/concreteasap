@@ -149,11 +149,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
     public function completeOrder($order_id, $quantity, $total, $message_quantity, $message_total, $review = [])
     {
         $order = Order::where("id", $order_id)->first();
-//        $order_confirmation = orderConfirmation::where("order_id", $order_id)->first();
-//        if (!$order_confirmation) {
-//            $order_confirmation = new orderConfirmation();
-//            $order_confirmation->order_id = $order_id;
-//        }
+
         if ($this->user->hasRole("contractor")) {
             //update order status
             $order->status = "Complete";
