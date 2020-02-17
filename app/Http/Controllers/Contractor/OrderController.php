@@ -172,7 +172,7 @@ class OrderController extends Controller
 
                 if (!is_null($result["user"])) {
                     $notification = [
-                        "msg" => "Order " . $result["job_id"] . " has been completed.",
+                        "msg" => "Order has been completed.",
                         "route" => "Previous Bid List",
                     ];
                     Notification::send($result["user"], new AppNotification($notification));
