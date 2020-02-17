@@ -167,7 +167,6 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
 
             try {
                 $bid = Bids::where("order_id", $order_id)->where("status", "Accepted")->first();
-                var_dump($bid);
                 $bid->status = "Complete";
                 DB::beginTransaction();
                 $order->save();
@@ -186,7 +185,6 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                 return [
                     "user" => $user,
                     "job_id"=>$order->job_id
-//                    "bid_id" => $bid["id"]
                 ];
             } catch (Throwable $e) {
                 \DB::rollback();
