@@ -167,6 +167,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
 
             try {
                 $bid = Bids::where("order_id", $order_id)->where("status", "Accepted")->first();
+                var_dump($bid);
                 $bid->status = "Complete";
                 DB::beginTransaction();
                 $order->save();
@@ -178,7 +179,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                 }
                 DB::commit();
                 $user = null;
-                var_dump($bid);
+
                 if ($bid) {
                     $user = User::find($bid->user_id);
                 }
