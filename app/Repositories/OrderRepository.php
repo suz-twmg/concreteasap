@@ -178,6 +178,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                 }
                 DB::commit();
                 $user = null;
+                var_dump($bid);
                 if ($bid) {
                     $user = User::find($bid->user_id);
                 }
