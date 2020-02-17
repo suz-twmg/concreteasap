@@ -169,7 +169,7 @@ class OrderController extends Controller
 
                 $review = ["comment" => $request->get("comment"), "rating" => $request->get("rating")];
                 $result = $this->orderRep->completeOrder($order_id, $quantity, $total, $message_quantity, $message_total, $review);
-                var_dump($result);
+
                 if (!is_null($result["user"])) {
                     $notification = [
                         "msg" => "Order has been completed.",

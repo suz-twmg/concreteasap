@@ -149,7 +149,6 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
     public function completeOrder($order_id, $quantity, $total, $message_quantity, $message_total, $review = [])
     {
         $order = Order::where("id", $order_id)->first();
-
         if ($this->user->hasRole("contractor")) {
             //update order status
             $order->status = "Complete";
@@ -179,13 +178,12 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                 }
                 DB::commit();
                 $user = null;
-                var_dump($bid);
                 if ($bid) {
-                    $user = $bid->user();
+                    $user = User::find($bid->user_id);
                 }
                 return [
                     "user" => $user,
-//                    "job_id"=>$order->job_id
+                    "job_id"=>$order->job_id
 //                    "bid_id" => $bid["id"]
                 ];
             } catch (Throwable $e) {
