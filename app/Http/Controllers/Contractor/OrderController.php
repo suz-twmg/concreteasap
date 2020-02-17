@@ -293,7 +293,7 @@ class OrderController extends Controller
                         "msg" => "Message has been requested for {$result["job_id"]}.",
                         "route" => "Rep View Message",
                         "params" => array(
-                            "bid_id" => isset($order["bid"]["id"])?$result["bid"]["id"]:""
+                            "bid_id" => isset($result["bid"]["id"])?$result["bid"]["id"]:""
                         )
                     ];
 
