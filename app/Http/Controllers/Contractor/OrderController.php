@@ -287,18 +287,18 @@ class OrderController extends Controller
             if ($validator->validate()) {
                 $order_id = $request->get("order_id");
                 $quantity = $request->get("quantity");
-                $order = $this->orderRep->messageOrder($order_id, $quantity);
-                if ($order) {
+                $result = $this->orderRep->messageOrder($order_id, $quantity);
+                if ($result) {
                     $notification = [
-                        "msg" => "Message has been requested for {$order->job_id}.",
+                        "msg" => "Message has been requested for {$result["job_id"]}.",
                         "route" => "Rep View Message",
                         "params" => array(
-                            "bid_id" => isset($order["bid"]["id"])?$order["bid"]["id"]:""
+                            "bid_id" => isset($order["bid"]["id"])?$result["bid"]["id"]:""
                         )
                     ];
 
-                    Notification::send($order["user"], new AppNotification($notification));
-                    return response()->json(array("message" => "Message has been requested", "order_message" => $order["order_message"]), 200);
+                    Notification::send($result["user"], new AppNotification($notification));
+                    return response()->json(array("message" => "Message has been requested", "order_message" => $result["order_message"]), 200);
                 } else {
                     return response()->json(array("message" => "Message has been requested"), 400);
                 }

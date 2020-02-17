@@ -372,7 +372,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         if ($order->message()->save($bid_message)) {
             $user = $order->getAcceptedBidUser();
         }
-        return ["user" => $user, "order_message" => $order->message()->get(), "bid" => $order->getAcceptedBid()];
+        return ["user" => $user, "order_message" => $order->message()->get(), "bid" => $order->getAcceptedBid(),"job_id"=>$order->job_id];
     }
 
     public function setMessagePrice(int $message_id, float $price)
