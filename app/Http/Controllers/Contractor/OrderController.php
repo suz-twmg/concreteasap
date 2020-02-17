@@ -174,6 +174,9 @@ class OrderController extends Controller
                     $notification = [
                         "msg" => "Order has been completed.",
                         "route" => "Previous Bid List",
+                        "params"=>[
+
+                        ]
                     ];
                     Notification::send($result["user"], new AppNotification($notification));
                 }
