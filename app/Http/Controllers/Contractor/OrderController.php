@@ -293,7 +293,7 @@ class OrderController extends Controller
                 $order = $this->orderRep->messageOrder($order_id, $quantity);
                 if ($order) {
                     $notification = [
-                        "msg" => "Message has been requested.",
+                        "msg" => "Message has been requested for {$order->job_id}.",
                         "route" => "Rep View Message",
                         "params" => array(
                             "bid_id" => isset($order["bid"]["id"])?$order["bid"]["id"]:""
