@@ -50,8 +50,9 @@ class BidController extends Controller
                 $payment_method=$request->get("payment_method");
                 $bid_data=$this->bid_repo->acceptBid($bid_id,$payment_method);
                 if($bid_data){
+                    $job_id=isset($bid_data["job_id"])?$bid_data["job_id"]:"";
                     $notification=[
-                        "msg"=>"Bid has been accepted",
+                        "msg"=>"Bid has been accepted for job {$job_id}",
                         "route"=>"Accepted Bid Detail",
                         "btn"=>["id"=>"VIEW_ORDER","text"=>"View Order"],
                         "params"=>array(
@@ -61,7 +62,7 @@ class BidController extends Controller
                     Notification::send(User::find($bid_data["accepted_users"]),new AppNotification($notification));
                     $rejected_users=User::whereIn("id",$bid_data["rejected_users"])->get();
                     $notification=[
-                        "msg"=>"Bid has been rejected",
+                        "msg"=>"Bid has been rejected for job {$job_id}",
                         "route" => "Previous Bid List",
                         "btn"=>["id"=>"VIEW_ORDER","text"=>"View Order"],
                         "params"=>array(
@@ -95,8 +96,10 @@ class BidController extends Controller
             ]);
             if(!$validator->fails()) {
                 $bid_id = $request->get("bid_id");
-                $bid_user = $this->bid_repo->rejectBid($bid_id);
-                if ($bid_user) {
+                $result = $this->bid_repo->rejectBid($bid_id);
+                if (isset($result["bid_user"])) {
+                    $bid_user=$result["bid_user"];
+
                     $notification = [
                         "msg" => "Your bid has been rejected",
                         "route" => "Order Pending Details",

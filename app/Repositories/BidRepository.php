@@ -74,12 +74,14 @@ class BidRepository implements Interfaces\BidRepositoryInterface
             $bid->payment_type=$payment_method;
             $bid->status = "Accepted";
             if ($bid->save()) {
+                $order=Order::where("id", $bid->order_id)->first();
                 $all_bids = [
                     "accepted_users" => $bid->user_id,
                     "rejected_users" => Bids::where("order_id", "=", $bid->order_id)->where("status", '=', 'Rejected')->pluck("user_id")->toArray(),
-                    "bid"=>$bid
+                    "bid"=>$bid,
+                    "order"=>$order->job_id
                 ];
-                if (Order::where("id", $bid->order_id)->update(['status' => "Accepted"])) {
+                if ($order->update(['status' => "Accepted"])) {
                     return $all_bids;
                 }
             }
@@ -91,11 +93,11 @@ class BidRepository implements Interfaces\BidRepositoryInterface
     public function rejectBid(int $bid_id)
     {
         $bid = Bids::where("id", $bid_id)->first();
-        $user = $bid->user;
         if ($bid) {
             $bid->status = "Rejected";
+            $order=Order::find($bid->order_id);
             if ($bid->save()) {
-                return User::find($bid->user_id);
+                return ["bid_user"=>User::find($bid->user_id),"job_id"=>$order->job_id];
             }
         } else {
             throw new \Exception("No bid found with id");

@@ -110,7 +110,7 @@ class OrderController extends Controller
                 $order=$result["order"];
                 //$user=$order->user();
                 $notification = [
-                    "msg" => "Order has been released.",
+                    "msg" => "Job {$result["job_id"]} has been released.",
                     "route" => "DayOfPour",
                     "params" => array(
                         "order_id" => $order["id"],
@@ -118,7 +118,7 @@ class OrderController extends Controller
                     )
                 ];
                 Notification::send(User::find($order->user_id), new AppNotification($notification));
-                return response()->json(array("msg" =>"Order Release has been sent"), 200);
+                return response()->json(array("msg" =>"Job {$result["job_id"]} Release has been sent"), 200);
             }
         } catch (\Exception $e) {
             return $this->handle_exception($e->getMessage());
@@ -138,8 +138,9 @@ class OrderController extends Controller
                 $message=$result["message"];
                 $order=Order::find($message->order_id);
                 $user=$order->user()->first();
+                $job_id=isset($result["job_id"])?$result["job_id"]:"";
                 $notification = [
-                    "msg" => "Order Message has been updated.",
+                    "msg" => "Order {$job_id} Message has been updated.",
                     "route" => "Order Message",
                     "params" => array(
                         "order_id" => $order["id"],
@@ -148,7 +149,7 @@ class OrderController extends Controller
                 ];
                 Notification::send($user, new AppNotification($notification));
 
-                return response()->json(array("msg" =>"Order Message has been responded","orders"=>$order->message()), 200);
+                return response()->json(array("msg" =>"Job {$job_id} Message has been responded","orders"=>$order->message()), 200);
             }
         } catch(\Exception $e){
             return $this->handle_exception($e->getMessage());

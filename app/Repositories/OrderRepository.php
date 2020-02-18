@@ -5,18 +5,12 @@ namespace App\Repositories;
 use App\Models\Bids\Bids;
 use App\Models\Order\Order;
 use App\Models\Order\orderConcrete;
-use App\Models\Order\BidMessage;
+//use App\Models\Order\BidMessage;
 use App\Models\Order\orderMessage;
 use App\Models\Order\orderReview;
 use App\User;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use mysql_xdevapi\Exception;
-
-// use Hashids\Hashids;
 
 class OrderRepository implements Interfaces\OrderRepositoryInterface
 {
@@ -115,7 +109,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         $order_concrete["special_instructions"] = isset($order_request["special_instructions"]) ? $order_request["special_instructions"] : "";
         $order_concrete["order_id"] = $order->id;
         if ($order->orderConcrete()->update($order_concrete)) {
-            return $order->getAcceptedBid();
+            return ["bid"=>$order->getAcceptedBid(),"job_id"=>$order->job_id];
         } else {
             throw new \Exception("Some Issue has occured");
         }
@@ -217,7 +211,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         if ($this->user->hasRole("contractor")) {
             $user = $bid->user;
         }
-        return ["user" => $user, "bid_id" => $bid["id"]];
+        return ["user" => $user, "bid_id" => $bid["id"],"job_id"=>$order->job_id];
     }
 
     public function confirmOrderDelivery($order_id)
@@ -305,23 +299,17 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
     public function releaseOrder($bid_id)
     {
         try {
-            if ($this->user->hasRole("rep")) {
-                $bid = Bids::find($bid_id);
-                $bid->released = true;
-                if ($bid->save()) {
-                    $order = Order::find($bid->order_id);
-                    $order->status = "Released";
-                    $order->save();
-                    return ["order"=>$order,"order_type"=>$bid->getOrderType()];
-                }
-            } else {
-                return null;
+            $bid = Bids::find($bid_id);
+            $bid->released = true;
+            if ($bid->save()) {
+                $order = Order::find($bid->order_id);
+                $order->status = "Released";
+                $order->save();
+                return ["order"=>$order,"order_type"=>$bid->getOrderType(),"job_id"=>$order->job_id];
             }
-
         } catch (\Exception $e) {
             return $e->getMessage();
         }
-
     }
 
     public function archiveOrder($order_id)
@@ -377,14 +365,14 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
 
     public function setMessagePrice(int $message_id, float $price)
     {
-        $order = null;
         try {
             $message = orderMessage::findorFail($message_id);
             $message->price = $price;
             $message->touch();
             $message->save();
-            $bid= Order::find($message->order_id)->getAcceptedBid();
-            return ["message"=>$message,"order_type"=>!is_null($bid)?$bid->getOrderType():null];
+            $order=Order::find($message->order_id);
+            $bid= $order->getAcceptedBid();
+            return ["message"=>$message,"order_type"=>!is_null($bid)?$bid->getOrderType():null,"job_id"=>$order->job_id];
         } catch (\Exception $e) {
             return $e->getMessage();
         }
@@ -400,7 +388,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                 $order_message->save();
             }
             $order= Order::find($order_message->order_id);
-            $message = $status === "Accepted" ? "Message has been accepted" : "Message has been rejected";
+            $message = $status === "Accepted" ? "Message has been accepted for {$order->job_id}" : "Message has been rejected for {$order->job_id}";
             return ["order" =>$order, "message" => $message];
 
         } catch (\Exception $e) {

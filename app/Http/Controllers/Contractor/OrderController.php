@@ -123,20 +123,22 @@ class OrderController extends Controller
         ]);
 
         if (!$validator->fails()) {
-            $bid = $this->orderRep->updateConcrete($request->all());
-            $bid_user = $bid->user()->get();
-            if ($bid_user) {
-                $notification = [
-                    "msg" => "Order " . $request->get("order_id") . " has been modified.",
-                    "route" => "Accepted Bid Detail",
-                    "params" => array(
-                        "bid_id" => $bid->id
-                    )
-                ];
-                Notification::send($bid_user, new AppNotification($notification));
-                return response()->json(array("message" => "Successfully Updated"), 200);
+            $result = $this->orderRep->updateConcrete($request->all());
+            if(isset($result["bid"])){
+                $bid=$result["bid"];
+                $bid_user = $bid->user()->get();
+                if ($bid_user) {
+                    $notification = [
+                        "msg" => "Job Id {$result['job_id']} has been modified.",
+                        "route" => "Accepted Bid Detail",
+                        "params" => array(
+                            "bid_id" => $bid->id
+                        )
+                    ];
+                    Notification::send($bid_user, new AppNotification($notification));
+                    return response()->json(array("message" => "Successfully Updated"), 200);
+                }
             }
-
         } else {
             return response()->json($validator->errors(), 400);
         }
@@ -171,8 +173,9 @@ class OrderController extends Controller
                 $result = $this->orderRep->completeOrder($order_id, $quantity, $total, $message_quantity, $message_total, $review);
 
                 if (!is_null($result["user"])) {
+                    $job_id=isset($result["job_id"])?$result["job_id"]:"";
                     $notification = [
-                        "msg" => "Order has been completed.",
+                        "msg" => "Job {$job_id} has been completed.",
                         "route" => "Previous Bid List",
                         "params"=>[
 
@@ -244,8 +247,9 @@ class OrderController extends Controller
                 $order_id = $request->get("order_id");
                 $result = $this->orderRep->cancelOrder($order_id);
                 if (isset($result["user"])&&isset($result["bid_id"])) {
+                    $job_id=isset($result["job_id"])?$result["job_id"]:"";
                     $notification = [
-                        "msg" => "Order has been cancelled.",
+                        "msg" => "Job {$job_id} has been cancelled.",
                         "route" => "Previous Bid Detail",
                         "params" => array(
                             "bid_id" => $result["bid_id"]
