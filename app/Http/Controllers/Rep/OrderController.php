@@ -140,7 +140,7 @@ class OrderController extends Controller
                 $user=$order->user()->first();
                 $job_id=isset($result["job_id"])?$result["job_id"]:"";
                 $notification = [
-                    "msg" => "Order {$job_id} Message has been updated.",
+                    "msg" => "Job {$job_id}'s message has been updated.",
                     "route" => "Order Message",
                     "params" => array(
                         "order_id" => $order["id"],
