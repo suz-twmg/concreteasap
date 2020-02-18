@@ -24,6 +24,10 @@ class Order extends Model
     protected $hidden = [
         "user_id"
     ];
+
+    protected $fillable=[
+        "status"
+    ];
     //
     public function orderConcrete()
     {
