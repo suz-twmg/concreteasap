@@ -148,14 +148,12 @@ class BidRepository implements Interfaces\BidRepositoryInterface
         $order = null;
         $order_type=null;
         $bid = Bids::find($bid_id);
-        if ($bid) {
-            //$bid->payment_type = $payment_method;
-//            $order=;
-//            $order->status="Invoice Paid";
-            if ($bid->order()->update(["status" => "Paid"])) {
-                $order=$bid->order;
+        $order=$bid->order;
+        if($order->status!=="Complete"||$order->status!=="Cancelled"||$order->status!=="archive"){
+            if ($bid) {
+                $bid->order()->update(["status" => "Paid"]);
+                $order_type=$bid->getOrderType();
             }
-            $order_type=$bid->getOrderType();
         }
         return ["order"=>$order,"order_type"=>$order_type];
         // TODO: Implement updatePaymentMethod() method.

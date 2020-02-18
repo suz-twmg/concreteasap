@@ -106,7 +106,7 @@ class OrderController extends Controller
         try {
             $result=$this->order_repo->releaseOrder($request->get("bid_id"));
 
-            if($result["order"]){
+            if(isset($result["order"])){
                 $order=$result["order"];
                 //$user=$order->user();
                 $notification = [
@@ -119,6 +119,9 @@ class OrderController extends Controller
                 ];
                 Notification::send(User::find($order->user_id), new AppNotification($notification));
                 return response()->json(array("msg" =>"Job {$result["job_id"]} Release has been sent"), 200);
+            }
+            else{
+                return response()->json(array("Order has been already Complete or Cancelled"),200);
             }
         } catch (\Exception $e) {
             return $this->handle_exception($e->getMessage());

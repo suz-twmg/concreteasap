@@ -301,11 +301,14 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         try {
             $bid = Bids::find($bid_id);
             $bid->released = true;
-            if ($bid->save()) {
-                $order = Order::find($bid->order_id);
-                $order->status = "Released";
-                $order->save();
-                return ["order"=>$order,"order_type"=>$bid->getOrderType(),"job_id"=>$order->job_id];
+            $order = Order::find($bid->order_id);
+            if($order->status!=="Complete"||$order->status!=="Cancelled"||$order->status!=="archive"){
+                if ($bid->save()) {
+
+                    $order->status = "Released";
+                    $order->save();
+                    return ["order"=>$order,"order_type"=>$bid->getOrderType(),"job_id"=>$order->job_id];
+                }
             }
         } catch (\Exception $e) {
             return $e->getMessage();

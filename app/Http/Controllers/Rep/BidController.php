@@ -117,6 +117,9 @@ class BidController extends Controller
                         return response()->json(array("msg"=>"There is some issue in the server."),400);
                     }
                 }
+                else{
+                    return response()->json(array("msg"=>"Order has been already complete or cancelled"),200);
+                }
             }
 
         }
