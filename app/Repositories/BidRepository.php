@@ -53,7 +53,6 @@ class BidRepository implements Interfaces\BidRepositoryInterface
             }
         }
 
-
         $bid->date_delivery = $date_delivery;
         $bid->time_delivery = $time_delivery;
 
@@ -63,7 +62,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
         $bid_transaction->transaction_id = $transaction["id"];
         $bid_transaction->invoice_url = $transaction["invoice_url"];
         $bid_transaction->approved = $transaction["approved"];
-        return $bid_transaction->save();
+        return ["job_id"=>$order->job_id];
     }
 
     public function acceptBid(int $bid_id, string $payment_method)
@@ -79,7 +78,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
                     "accepted_users" => $bid->user_id,
                     "rejected_users" => Bids::where("order_id", "=", $bid->order_id)->where("status", '=', 'Rejected')->pluck("user_id")->toArray(),
                     "bid"=>$bid,
-                    "order"=>$order->job_id
+                    "job_id"=>$order->job_id
                 ];
                 if ($order->update(['status' => "Accepted"])) {
                     return $all_bids;

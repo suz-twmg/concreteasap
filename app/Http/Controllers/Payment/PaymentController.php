@@ -82,8 +82,9 @@ class PaymentController extends Controller
                 ];
                 $date_delivery=isset($request["date_delivery"])?$request["date_delivery"]:"";
                 $time_delivery=isset($request["time_delivery"])?$request["time_delivery"]:"";
-                if($this->bid_repo->save($request["price"],$request["order_id"],$this->user->id,$transaction,$date_delivery,$time_delivery)){
-
+                $result=$this->bid_repo->save($request["price"],$request["order_id"],$this->user->id,$transaction,$date_delivery,$time_delivery);
+                if(isset($result["job_id"])){
+                    $job_id=$result["job_id"];
                     if($is_save_details){
                         $this->user_repo->savePaymentDetail($customer->id,$this->user->id);
                     }
@@ -94,7 +95,7 @@ class PaymentController extends Controller
                         "order_id"=>$request["order_id"]
                     );
                     $notification = [
-                        "msg" => "You have received new bid.",
+                        "msg" => "You have received new bid in job {$job_id}.",
                         "route"=>"ViewBids",
                         "btn"=>["id"=>"VIEW_BIDS","text"=>"View Bid"],
                         "params"=>$params

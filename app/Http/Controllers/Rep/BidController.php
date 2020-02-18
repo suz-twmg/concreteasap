@@ -102,7 +102,7 @@ class BidController extends Controller
                 if(isset($result["order"])){
                     $order=$result["order"];
                     $notification=[
-                        "msg"=>"Your Order has been marked as paid.",
+                        "msg"=>"Job {$order["job_id"]} has been marked as paid.",
                         "route" => "DayOfPour",
                         "params" => array(
                             "order_id"=>$order->id,

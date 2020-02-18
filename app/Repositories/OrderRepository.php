@@ -388,7 +388,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                 $order_message->save();
             }
             $order= Order::find($order_message->order_id);
-            $message = $status === "Accepted" ? "Message has been accepted for {$order->job_id}" : "Message has been rejected for {$order->job_id}";
+            $message = $status === "Accepted" ? "Message has been accepted for job {$order->job_id}" : "Message has been rejected for job {$order->job_id}";
             return ["order" =>$order, "message" => $message];
 
         } catch (\Exception $e) {
