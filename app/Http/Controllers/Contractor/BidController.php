@@ -99,7 +99,7 @@ class BidController extends Controller
                 $result = $this->bid_repo->rejectBid($bid_id);
                 if (isset($result["bid_user"])) {
                     $bid_user=$result["bid_user"];
-
+                    $job_id=isset($result["job_id"])?$result["job_id"]:"";
                     $notification = [
                         "msg" => "Your bid has been rejected",
                         "route" => "Order Pending Details",
