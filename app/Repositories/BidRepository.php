@@ -15,11 +15,15 @@ class BidRepository implements Interfaces\BidRepositoryInterface
 
     private $bids;
     private $user;
+    private $custom_columns;
 
     public function __construct(Bids $bids)
     {
         $this->bids = $bids;
         $this->user = auth('api')->user();
+        $this->custom_columns = ["id", "order_id", "post_code", "state", "suburb", "type", "placement_type", "mpa", "agg", "slump", "acc", "quantity", "delivery_date",
+            "delivery_date1", "delivery_date2", "special_instructions", "delivery_instructions", "colours",
+            "preference", "message_required", "urgency", "time_preference1", "time_preference2", "time_preference3", "time_deliveries"]; // add all columns from you table
     }
 
     public function save($price, $order_id, $user_id, $transaction, $date_delivery, $time_delivery)
@@ -120,8 +124,8 @@ class BidRepository implements Interfaces\BidRepositoryInterface
     public function getRepPreviousBids()
     {
         return $this->user->bids()->with(["order" => function ($query) {
-            $query->with(["orderConcrete"])->orderBy("id", "DESC")->get();
-        }])->whereIn("status", ["Complete", "Cancelled"])->orderBy("id","DESC")->paginate(25);
+            $query->select($this->custom_columns)->with(["orderConcrete"])->orderBy("id", "DESC")->get();
+        }])->whereIn("status", ["Complete", "Cancelled","Rejected"])->orderBy("id","DESC")->paginate(25);
     }
 
     public function getRepAcceptedBids()
