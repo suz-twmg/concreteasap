@@ -126,7 +126,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
         $bids=$this->user->bids()->with(["order" => function ($query) {
             $query->with(["orderConcrete"])->orderBy("id", "DESC")->get();
         }])->whereIn("status", ["Complete", "Cancelled","Rejected"])->orderBy("id","DESC")->get();
-        return $bids;
+                return $bids;
     }
 
     public function getRepAcceptedBids()
