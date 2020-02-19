@@ -21,12 +21,12 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         //
-        $this->app->bind(            
+        $this->app->bind(
             UserRepositoryInterface::class,
             UserRepository::class
         );
 
-        $this->app->bind(            
+        $this->app->bind(
             OrderRepositoryInterface::class,
             OrderRepository::class
         );
@@ -45,6 +45,6 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //       
+        //
     }
 }

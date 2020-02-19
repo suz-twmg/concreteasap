@@ -158,6 +158,10 @@ class User extends Authenticatable implements JWTSubject
         }])->whereIn("status",$status)->orderBy('id', 'DESC')->get();
     }
 
+    public function getOrderById($order_id){
+        return $this->orders()->find($order_id);
+    }
+
 //    public function setEmailAttribute($value)
 //    {
 //        $this->attributes['email'] = strtolower($value);

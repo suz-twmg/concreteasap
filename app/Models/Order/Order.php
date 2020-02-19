@@ -89,4 +89,8 @@ class Order extends Model
         }
         return $job_id;
     }
+
+    public function scopeAuthuser($query){
+        return $query->where("user_id",'=',Auth::user()->id);
+    }
 }

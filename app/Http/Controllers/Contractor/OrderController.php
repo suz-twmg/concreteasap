@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Contractor;
 
+use App\Models\Order\Order;
 use App\Notifications\AppNotification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -12,6 +13,7 @@ use App\Repositories\Interfaces\OrderRepositoryInterface;
 
 //use Illuminate\Http\Resources\Json\JsonResource;
 //use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 
@@ -123,22 +125,29 @@ class OrderController extends Controller
         ]);
 
         if (!$validator->fails()) {
-            $result = $this->orderRep->updateConcrete($request->all());
-            if(isset($result["bid"])){
-                $bid=$result["bid"];
-                $bid_user = $bid->user()->get();
-                if ($bid_user) {
-                    $notification = [
-                        "msg" => "Job Id {$result['job_id']} has been modified.",
-                        "route" => "Accepted Bid Detail",
-                        "params" => array(
-                            "bid_id" => $bid->id
-                        )
-                    ];
-                    Notification::send($bid_user, new AppNotification($notification));
-                    return response()->json(array("message" => "Successfully Updated"), 200);
+            $order=Order::find($request->get("order_id"));
+            if(Gate::allows("update-order",$order)){
+                $result = $this->orderRep->updateConcrete($request->all());
+                if(isset($result["bid"])){
+                    $bid=$result["bid"];
+                    $bid_user = $bid->user()->get();
+                    if ($bid_user) {
+                        $notification = [
+                            "msg" => "Job Id {$result['job_id']} has been modified.",
+                            "route" => "Accepted Bid Detail",
+                            "params" => array(
+                                "bid_id" => $bid->id
+                            )
+                        ];
+                        Notification::send($bid_user, new AppNotification($notification));
+                        return response()->json(array("message" => "Successfully Updated"), 200);
+                    }
                 }
             }
+            else{
+                return response()->json(["msg"=>"No Order Found,"],400);
+            }
+
         } else {
             return response()->json($validator->errors(), 400);
         }
