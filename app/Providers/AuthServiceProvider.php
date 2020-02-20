@@ -26,7 +26,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define("update-order",function($user,$order){
+        Gate::define("order-owner",function($user,$order){
             return $user->id===$order->user_id;
         });
         // Passport::routes();

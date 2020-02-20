@@ -126,7 +126,8 @@ class OrderController extends Controller
 
         if (!$validator->fails()) {
             $order=Order::find($request->get("order_id"));
-            if(Gate::allows("update-order",$order)){
+            //check if order belongs to the authenticated user
+            if(Gate::allows("order-owner",$order)){
                 $result = $this->orderRep->updateConcrete($request->all());
                 if(isset($result["bid"])){
                     $bid=$result["bid"];
@@ -173,27 +174,34 @@ class OrderController extends Controller
         try {
             if (!$validator->fails()) {
                 $order_id = $request->get("order_id");
-                $quantity = $request->get("quantity");
-                $total = $request->get("total") ? $request->get("total") : 0;
-                $message_quantity = $request->get("message_quantity") ? $request->get("message_quantity") : 0;
-                $message_total = $request->get("message_total") ? $request->get("message_total") : 0;
+                $order=Order::find("order_id");
+                if(Gate::allows("order-owner",$order)) {
 
-                $review = ["comment" => $request->get("comment"), "rating" => $request->get("rating")];
-                $result = $this->orderRep->completeOrder($order_id, $quantity, $total, $message_quantity, $message_total, $review);
+                    $quantity = $request->get("quantity");
+                    $total = $request->get("total") ? $request->get("total") : 0;
+                    $message_quantity = $request->get("message_quantity") ? $request->get("message_quantity") : 0;
+                    $message_total = $request->get("message_total") ? $request->get("message_total") : 0;
 
-                if (!is_null($result["user"])) {
-                    $job_id=isset($result["job_id"])?$result["job_id"]:"";
-                    $notification = [
-                        "msg" => "Job {$job_id} has been completed.",
-                        "route" => "Previous Bid List",
-                        "params"=>[
+                    $review = ["comment" => $request->get("comment"), "rating" => $request->get("rating")];
+                    $result = $this->orderRep->completeOrder($order_id, $quantity, $total, $message_quantity, $message_total, $review);
 
-                        ]
-                    ];
-                    Notification::send($result["user"], new AppNotification($notification));
+                    if (!is_null($result["user"])) {
+                        $job_id = isset($result["job_id"]) ? $result["job_id"] : "";
+                        $notification = [
+                            "msg" => "Job {$job_id} has been completed.",
+                            "route" => "Previous Bid List",
+                            "params" => [
+
+                            ]
+                        ];
+                        Notification::send($result["user"], new AppNotification($notification));
+                    }
+
+                    return response()->json(array("message" => "Order has been completed"), 200);
                 }
-
-                return response()->json(array("message" => "Order has been completed"), 200);
+                else{
+                    return response()->json(["msg"=>"Job has not been found"], 400);
+                }
             }
             else {
                 return response()->json($validator->errors(), 400);
