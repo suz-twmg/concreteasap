@@ -81,7 +81,7 @@ class APILoginController extends Controller
             'state' => 'required',
             'password' => 'required',
             'confirm_password' => 'required|same:password',
-            'roles' => 'in:contractor,rep',
+            'roles' => 'in:contractor,rep,reo_rep',
             'photo' => 'mimes:jpeg,png|max:5120',
         ],[
             'photo.max:5120'=>"The logo should be less than 5 MB."
