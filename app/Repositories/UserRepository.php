@@ -25,10 +25,7 @@ class UserRepository implements Interfaces\UserRepositoryInterface
     {
         $user = new User();
         $user_detail = new User_Details();
-        $user_role = null;
-        if ($user_details['roles'] == 'contractor' || $user_details['roles'] == 'rep') {
-            $user_role = Role::where('name', '=', $user_details['roles'])->first();
-        }
+        $user_role = Role::where('name', '=', $user_details['roles'])->first();
         $user->email = $user_details["email"];
         $user->password = Hash::make($user_details["password"]);
         $user->status = "verified";
