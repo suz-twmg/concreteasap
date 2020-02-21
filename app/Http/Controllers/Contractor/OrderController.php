@@ -175,8 +175,8 @@ class OrderController extends Controller
             if (!$validator->fails()) {
                 $order_id = $request->get("order_id");
                 $order=Order::find("order_id");
+                var_dump($order);
                 if(Gate::allows("order-owner",$order)) {
-
                     $quantity = $request->get("quantity");
                     $total = $request->get("total") ? $request->get("total") : 0;
                     $message_quantity = $request->get("message_quantity") ? $request->get("message_quantity") : 0;
