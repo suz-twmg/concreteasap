@@ -172,7 +172,7 @@ class OrderController extends Controller
             'comment' => 'required'
         ]);
         try {
-            if (!$validator->fails())
+            if (!$validator->fails()){
                 $order_id=$request->get("order_id");
                 $order=Order::find($order_id);
 //                var_dump($order);
