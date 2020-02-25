@@ -9,6 +9,7 @@ use App\Models\Order\orderConcrete;
 use App\Models\Order\orderMessage;
 use App\Models\Order\orderReview;
 use App\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -244,7 +245,15 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         $columns = $this->custom_columns;
         $orders = Order::whereHas("orderConcrete")->with(["orderConcrete" => function ($query) use ($columns) {
             $query->select($columns);
-        }])->whereNotIn("id", Bids::where("user_id", "=", $this->user->id)->get(['order_id'])->toArray())
+        }])->whereNotIn("id",function($query){
+            $time=Carbon::now('Australia/Sydney')->format("Y-m-d");
+
+            $query->select("id")->from("order_concretes")
+                ->where("delivery_date",">=",$time)
+                ->where("delivery_date1",">=",$time)
+                ->where("delivery_date2",">=",$time);
+        })
+            ->whereNotIn("id", Bids::where("user_id", "=", $this->user->id)->get(['order_id'])->toArray())
             ->whereNotIn("status", ["Accepted", "Released", "Paid", "Complete", "Cancelled", "archive"])
             ->orderBy("id", "DESC");
 
