@@ -110,7 +110,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         $order_concrete["special_instructions"] = isset($order_request["special_instructions"]) ? $order_request["special_instructions"] : "";
         $order_concrete["order_id"] = $order->id;
         if ($order->orderConcrete()->update($order_concrete)) {
-            return ["bid"=>$order->getAcceptedBid(),"job_id"=>$order->job_id];
+            return ["bid" => $order->getAcceptedBid(), "job_id" => $order->job_id];
         } else {
             throw new \Exception("Some Issue has occured");
         }
@@ -124,11 +124,12 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                     $query->select("user_id", "company")->get();
                 }])->select("id")->get();
             }])->where("status", "!=", "Rejected");
-        }])->whereIn("status",["Pending"])->orderBy('id', 'DESC')->get();
+        }])->whereIn("status", ["Pending"])->orderBy('id', 'DESC')->get();
     }
 
-    public function getContractorPreviousOrders(){
-        return $this->user->getContractorOrders(["Complete","Cancelled"]);
+    public function getContractorPreviousOrders()
+    {
+        return $this->user->getContractorOrders(["Complete", "Cancelled"]);
     }
 
     public function getPendingOrders()
@@ -179,7 +180,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                 }
                 return [
                     "user" => $user,
-                    "job_id"=>$order->job_id
+                    "job_id" => $order->job_id
                 ];
             } catch (Throwable $e) {
                 \DB::rollback();
@@ -212,7 +213,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         if ($this->user->hasRole("contractor")) {
             $user = $bid->user;
         }
-        return ["user" => $user, "bid_id" => $bid["id"],"job_id"=>$order->job_id];
+        return ["user" => $user, "bid_id" => $bid["id"], "job_id" => $order->job_id];
     }
 
     public function confirmOrderDelivery($order_id)
@@ -228,7 +229,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
     public function getAcceptedOrders()
     {
         return $this->user->orders()->whereHas("orderConcrete")->whereHas("bids", function ($q) {
-            return $q->where("date_delivery","!=", \Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d"));
+            return $q->where("date_delivery", "!=", \Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d"));
         })->with(["message", "orderConcrete", "bids" => function ($query) {
             $query->with(["user" => function ($query) {
                 $query->with(["detail" => function ($query) {
@@ -243,17 +244,14 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
     public function getRepAllOrders()
     {
         $columns = $this->custom_columns;
-        $orders = Order::whereHas("orderConcrete")->with(["orderConcrete" => function ($query) use ($columns) {
+        $orders = Order::whereHas("orderConcrete",function($query){
+            $time=Carbon::today("Australia/Sydney")->toDateString();
+            $query->where("delivery_date", ">=", $time)
+                ->where("delivery_date1", ">=", $time)
+                ->where("delivery_date2", ">=", $time);
+        })->with(["orderConcrete" => function ($query) use ($columns) {
             $query->select($columns);
-        }])->whereNotIn("id",function($query){
-            $time=Carbon::now('Australia/Sydney')->format("Y-m-d");
-
-            $query->select("id")->from("order_concretes")
-                ->where("delivery_date",">=",$time)
-                ->where("delivery_date1",">=",$time)
-                ->where("delivery_date2",">=",$time);
-        })
-            ->whereNotIn("id", Bids::where("user_id", "=", $this->user->id)->get(['order_id'])->toArray())
+        }])->whereNotIn("id", Bids::where("user_id", "=", $this->user->id)->get(['order_id'])->toArray())
             ->whereNotIn("status", ["Accepted", "Released", "Paid", "Complete", "Cancelled", "archive"])
             ->orderBy("id", "DESC");
 
@@ -311,11 +309,11 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
             $bid = Bids::find($bid_id);
             $bid->released = true;
             $order = Order::find($bid->order_id);
-            if($bid->status!=="Complete"&&$bid->status!=="Cancelled"&&$order->status!=="archive"){
+            if ($bid->status !== "Complete" && $bid->status !== "Cancelled" && $order->status !== "archive") {
                 if ($bid->save()) {
                     $order->status = "Released";
                     $order->save();
-                    return ["order"=>$order,"order_type"=>$bid->getOrderType(),"job_id"=>$order->job_id];
+                    return ["order" => $order, "order_type" => $bid->getOrderType(), "job_id" => $order->job_id];
                 }
             }
         } catch (\Exception $e) {
@@ -344,7 +342,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
 
     public function getDayOfPourOrders()
     {
-        $orders = $this->user->orders()->with(["orderConcrete","message","user", "bids" => function ($query) {
+        $orders = $this->user->orders()->with(["orderConcrete", "message", "user", "bids" => function ($query) {
             $query->with(["user" => function ($query) {
                 $query->with(["detail" => function ($query) {
                     $query->select(["user_id", "company", "first_name", "last_name", "phone_number", "profile_image", "abn"]);
@@ -371,7 +369,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         if ($order->message()->save($bid_message)) {
             $user = $order->getAcceptedBidUser();
         }
-        return ["user" => $user, "order_message" => $order->message()->get(), "bid" => $order->getAcceptedBid(),"job_id"=>$order->job_id];
+        return ["user" => $user, "order_message" => $order->message()->get(), "bid" => $order->getAcceptedBid(), "job_id" => $order->job_id];
     }
 
     public function setMessagePrice(int $message_id, float $price)
@@ -381,9 +379,9 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
             $message->price = $price;
             $message->touch();
             $message->save();
-            $order=Order::find($message->order_id);
-            $bid= $order->getAcceptedBid();
-            return ["message"=>$message,"order_type"=>!is_null($bid)?$bid->getOrderType():null,"job_id"=>$order->job_id];
+            $order = Order::find($message->order_id);
+            $bid = $order->getAcceptedBid();
+            return ["message" => $message, "order_type" => !is_null($bid) ? $bid->getOrderType() : null, "job_id" => $order->job_id];
         } catch (\Exception $e) {
             return $e->getMessage();
         }
@@ -398,9 +396,9 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                 $order_message->status = $status;
                 $order_message->save();
             }
-            $order= Order::find($order_message->order_id);
+            $order = Order::find($order_message->order_id);
             $message = $status === "Accepted" ? "Message has been accepted for job {$order->job_id}" : "Message has been rejected for job {$order->job_id}";
-            return ["order" =>$order, "message" => $message];
+            return ["order" => $order, "message" => $message];
 
         } catch (\Exception $e) {
             return $e->getMessage();
