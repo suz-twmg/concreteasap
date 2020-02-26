@@ -247,8 +247,8 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         $orders = Order::whereHas("orderConcrete",function($query){
             $time=Carbon::today("Australia/Sydney")->toDateString();
             $query->where("delivery_date", ">=", $time)
-                ->where("delivery_date1", ">=", $time)
-                ->where("delivery_date2", ">=", $time);
+                ->orWhere("delivery_date1", ">=", $time)
+                ->orWhere("delivery_date2", ">=", $time);
         })->with(["orderConcrete" => function ($query) use ($columns) {
             $query->select($columns);
         }])->whereNotIn("id", Bids::where("user_id", "=", $this->user->id)->get(['order_id'])->toArray())
