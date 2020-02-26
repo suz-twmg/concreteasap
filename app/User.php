@@ -123,12 +123,12 @@ class User extends Authenticatable implements JWTSubject
         $columns = $this->custom_columns;
 //        $this->bids()->whereHas("order")->get();
         return $this->bids()->whereHas("order",function($query){
-            $query->whereIn("status", ["Pending", "Rejected"]);
+            $query->whereIn("status", ["Pending"]);
         })->with(["order" => function ($query) use ($columns) {
             $query->whereHas("orderConcrete")->with(["orderConcrete" => function ($query) use ($columns) {
                 return $query->select($columns);
             }])->orderBy("id", "DESC");
-        }])->whereIn("status", ["Pending", "Rejected"])->orderBy("order_id","DESC")->get();
+        }])->whereIn("status", ["Pending"])->orderBy("order_id","DESC")->get();
     }
 
 

@@ -258,23 +258,30 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(), [
             'order_id' => 'required',
         ]);
+        $order_id = $request->get("order_id");
 
         try {
             if ($validator->validate()) {
-                $order_id = $request->get("order_id");
-                $result = $this->orderRep->cancelOrder($order_id);
-                if (isset($result["user"])&&isset($result["bid_id"])) {
-                    $job_id=isset($result["job_id"])?$result["job_id"]:"";
-                    $notification = [
-                        "msg" => "Job {$job_id} has been cancelled.",
-                        "route" => "Previous Bid Detail",
-                        "params" => array(
-                            "bid_id" => $result["bid_id"]
-                        )
-                    ];
-                    Notification::send($result["user"], new AppNotification($notification));
+                $order=Order::find($order_id);
+                if(Gate::allows("order-owner",$order)) {
+                    $result = $this->orderRep->cancelOrder($order_id);
+                    if (isset($result["user"])&&isset($result["bid_id"])) {
+                        $job_id=isset($result["job_id"])?$result["job_id"]:"";
+                        $notification = [
+                            "msg" => "Job {$job_id} has been cancelled.",
+                            "route" => "Previous Bid Detail",
+                            "params" => array(
+                                "bid_id" => $result["bid_id"]
+                            )
+                        ];
+                        Notification::send($result["user"], new AppNotification($notification));
+                    }
+                    return response()->json(array("message" => "Order has been cancelled"), 200);
                 }
-                return response()->json(array("message" => "Order has been cancelled"), 200);
+                else{
+                    return response()->json(["msg"=>"Job has not been found"], 400);
+                }
+
             }
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);
@@ -294,11 +301,19 @@ class OrderController extends Controller
      */
     public function archiveOrder(Request $request)
     {
-        if ($this->orderRep->archiveOrder($request->get("order_id"))) {
-            return response()->json("Succesfully Archived", 200);
-        } else {
-            return response()->json("Couldn't Archive", 400);
+        $order_id=$request->get("order_id");
+        $order=Order::find($order_id);
+        if(Gate::allows("order-owner",$order)) {
+            if ($this->orderRep->archiveOrder($order_id)) {
+                return response()->json("Succesfully Archived", 200);
+            } else {
+                return response()->json("Couldn't Archive", 400);
+            }
         }
+        else{
+            return response()->json(["msg"=>"Job has not been found"], 400);
+        }
+
     }
 
     public function messageOrder(Request $request)
@@ -307,24 +322,30 @@ class OrderController extends Controller
             'order_id' => 'required',
             'quantity' => 'required'
         ]);
+        $order_id = $request->get("order_id");
+        $order=Order::find($order_id);
         try {
             if ($validator->validate()) {
-                $order_id = $request->get("order_id");
-                $quantity = $request->get("quantity");
-                $result = $this->orderRep->messageOrder($order_id, $quantity);
-                if ($result) {
-                    $notification = [
-                        "msg" => "Message has been requested for Job {$result["job_id"]}.",
-                        "route" => "Rep View Message",
-                        "params" => array(
-                            "bid_id" => isset($result["bid"]["id"])?$result["bid"]["id"]:""
-                        )
-                    ];
+                if(Gate::allows("order-owner",$order)) {
+                    $quantity = $request->get("quantity");
+                    $result = $this->orderRep->messageOrder($order_id, $quantity);
+                    if ($result) {
+                        $notification = [
+                            "msg" => "Message has been requested for Job {$result["job_id"]}.",
+                            "route" => "Rep View Message",
+                            "params" => array(
+                                "bid_id" => isset($result["bid"]["id"])?$result["bid"]["id"]:""
+                            )
+                        ];
 
-                    Notification::send($result["user"], new AppNotification($notification));
-                    return response()->json(array("message" => "Message has been requested", "order_message" => $result["order_message"]), 200);
-                } else {
-                    return response()->json(array("message" => "Message has been requested"), 400);
+                        Notification::send($result["user"], new AppNotification($notification));
+                        return response()->json(array("message" => "Message has been requested", "order_message" => $result["order_message"]), 200);
+                    } else {
+                        return response()->json(array("message" => "Message has been requested"), 400);
+                    }
+                }
+                else{
+                    return response()->json(["msg"=>"Job has not been found"], 400);
                 }
             } else {
                 return response()->json($validator->errors(), 400);

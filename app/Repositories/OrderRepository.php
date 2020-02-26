@@ -262,10 +262,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
 
     public function getRepPendingOrders()
     {
-        $columns = $this->custom_columns;
-        $orders = $this->user->bidPendingOrders();
-//        []
-        return $orders;
+        return $this->user->bidPendingOrders();
     }
 
     public function getOrder($id)
