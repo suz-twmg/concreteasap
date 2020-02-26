@@ -255,7 +255,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
             ->whereNotIn("status", ["Accepted", "Released", "Paid", "Complete", "Cancelled", "archive"])
             ->orderBy("id", "DESC");
 
-        $orders = $orders->paginate(25);
+        $orders = $orders->paginate(200);
 //        $orders["sql"]=$orders->toSql();
         return $orders;
     }
