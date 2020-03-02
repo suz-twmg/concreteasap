@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Contractor;
 
 use App\Models\Order\Order;
 use App\Notifications\AppNotification;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -299,7 +300,12 @@ class OrderController extends Controller
         ]);
         $order_id = $request->get("order_id");
         try{
-            $order=$this->orderRep->markAsPaid($order_id);
+            $order=Order::findOrFail($order_id);
+
+            if(!Gate::allows("order-owner",$order)) {
+                throw new \Exception('Job Number does not exist.');
+            }
+            $this->orderRep->markAsPaid($order_id);
             $accepted_bid= $order->getAcceptedBid();
             $notification = [
                 "msg" => "Job {$order->job_id} has been mark as Paid.",
@@ -309,6 +315,9 @@ class OrderController extends Controller
                 )
             ];
             Notification::send($accepted_bid->user, new AppNotification($notification));
+        }
+        catch(ModelNotFoundException $e){
+            return response()->json("Job Number does not found",400);
         }
         catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);
