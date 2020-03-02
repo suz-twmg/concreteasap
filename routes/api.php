@@ -79,11 +79,16 @@ Route::group([
     Route::post('order/messageOrder', 'Contractor\OrderController@messageOrder');
     Route::post("order/updateMessageStatus", 'Contractor\OrderController@updateMessageStatus');
 
+    Route::post('order/markPaid','Contractor\OrderController@markOrderAsPaid');
+
+
     Route::post('order/completeOrder', 'Contractor\OrderController@completeOrder');
     Route::post('order/confirmOrderDelivery', 'Contractor\OrderController@confirmOrderDelivery');
     Route::post('order/modifyOrder', 'Contractor\OrderController@updateOrder');
     Route::post('order/cancelOrder', 'Contractor\OrderController@cancelOrder');
     Route::post('order/archiveOrder', 'Contractor\OrderController@archiveOrder');
+
+
 
 });
 

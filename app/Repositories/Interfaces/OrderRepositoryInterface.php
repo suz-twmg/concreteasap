@@ -18,4 +18,6 @@ interface OrderRepositoryInterface{
     public function getRepOrders();
     public function getRepAcceptedOrders();
     public function getRepPendingOrders();
+
+    public function markAsPaid($order_id);
 }

@@ -403,4 +403,13 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
 
     }
 
+    public function markAsPaid($order_id)
+    {
+        $order=Order::findOrFail($order_id);
+        $order->update([
+            "status"=>"Paid"
+        ]);
+        return $order;
+        // TODO: Implement markAsPaid() method.
+    }
 }

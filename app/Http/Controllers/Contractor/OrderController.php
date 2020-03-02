@@ -293,6 +293,28 @@ class OrderController extends Controller
         return response()->json($this->orderRep->getDayOfPourOrders(), 200);
     }
 
+    public function markOrderAsPaid(Request $request){
+        $validator = Validator::make($request->all(), [
+            'order_id' => 'required',
+        ]);
+        $order_id = $request->get("order_id");
+        try{
+            $order=$this->orderRep->markAsPaid($order_id);
+            $accepted_bid= $order->getAcceptedBid();
+            $notification = [
+                "msg" => "Job {$order->job_id} has been cancelled.",
+                "route" => "Previous Bid Detail",
+                "params" => array(
+                    "bid_id" =>$accepted_bid["bid_id"]
+                )
+            ];
+            Notification::send($accepted_bid->user(), new AppNotification($notification));
+        }
+        catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
