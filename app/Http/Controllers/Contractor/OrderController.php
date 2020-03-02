@@ -305,7 +305,7 @@ class OrderController extends Controller
                 "msg" => "Job {$order->job_id} has been cancelled.",
                 "route" => "Previous Bid Detail",
                 "params" => array(
-                    "bid_id" =>$accepted_bid["bid_id"]
+                    "bid_id" =>$accepted_bid["id"]
                 )
             ];
             var_dump($accepted_bid["bid_id"]);
