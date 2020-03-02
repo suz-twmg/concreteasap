@@ -302,7 +302,7 @@ class OrderController extends Controller
             $order=$this->orderRep->markAsPaid($order_id);
             $accepted_bid= $order->getAcceptedBid();
             $notification = [
-                "msg" => "Job {$order->job_id} has been cancelled.",
+                "msg" => "Job {$order->job_id} has been mark as Paid.",
                 "route" => "Previous Bid Detail",
                 "params" => array(
                     "bid_id" =>$accepted_bid["id"]
