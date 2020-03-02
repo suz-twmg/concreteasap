@@ -308,8 +308,6 @@ class OrderController extends Controller
                     "bid_id" =>$accepted_bid["id"]
                 )
             ];
-            var_dump($accepted_bid["bid_id"]);
-            var_dump($accepted_bid->user);
             Notification::send($accepted_bid->user, new AppNotification($notification));
         }
         catch (\Exception $e) {
