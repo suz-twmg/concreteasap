@@ -157,7 +157,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
         $order=$bid->order;
         if($bid->status!=="Complete"&&$bid->status!=="Cancelled"&&$order->status!=="archive"){
             if ($bid) {
-                $bid->order()->update(["status" => "Paid"]);
+                $bid->order()->update(["confirm_payment" =>true]);
                 $order_type=$bid->getOrderType();
             }
             return ["order"=>$order,"order_type"=>$order_type];
