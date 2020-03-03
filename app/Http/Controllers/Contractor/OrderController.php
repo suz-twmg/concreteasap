@@ -307,7 +307,7 @@ class OrderController extends Controller
             }
             $this->orderRep->markAsPaid($order);
             $accepted_bid= $order->getAcceptedBid();
-            var_dump($accepted_bid["id"]);
+//            var_dump($accepted_bid["id"]);
             $notification = [
                 "msg" => "Job {$order->job_id} has been requested to be marked as Paid.",
                 "route" => "Previous Bid Detail",
