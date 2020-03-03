@@ -316,7 +316,7 @@ class OrderController extends Controller
                 )
             ];
             Notification::send($accepted_bid->user, new AppNotification($notification));
-            return response()->json("Job has been marked as Paid",200);
+            return response()->json("Job has been requested to be marked as Paid",200);
         }
         catch(ModelNotFoundException $e){
             return response()->json("Job Number does not found",400);
