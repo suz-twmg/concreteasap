@@ -44,4 +44,8 @@ class Bids extends Model
     public function isCompleteOrCancelled(){
         return in_array($this->status,array("Complete","Cancelled","archive"));
     }
+
+    public function isDayOfPour(){
+        return $this->date_delivery===\Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d");
+    }
 }
