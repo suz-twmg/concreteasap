@@ -181,12 +181,12 @@ class BidRepository implements Interfaces\BidRepositoryInterface
             throw new \Exception("Order has been already been complete or cancelled");
         }
 
-        if(!$order->isPaid()){
-            throw new \Exception("Order has not been paid");
-        }
-
         if($order->status==="Released"){
             throw new \Exception("Order has already been released");
+        }
+
+        if(!$order->isPaid()){
+            throw new \Exception("Order has not been paid");
         }
 
         if ($bid->save()) {
