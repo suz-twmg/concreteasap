@@ -157,11 +157,15 @@ class BidRepository implements Interfaces\BidRepositoryInterface
         $order=$bid->order;
 
         if($bid->isCompleteOrCancelled()){
-            throw new \Exception("Order has been already been complete or cancelled");
+            throw new \Exception("Job has been already been complete or cancelled");
         }
 
         if($order->isPaid()){
-            throw new \Exception("Order has been already been paid");
+            throw new \Exception("Job has been already been paid");
+        }
+
+        if($order->isReleased()){
+            throw new \Exception("Job has been already been released");
         }
 
         $bid->order()->update(["status" =>"Paid"]);
@@ -178,15 +182,15 @@ class BidRepository implements Interfaces\BidRepositoryInterface
         $order = $bid->order;
 
         if($bid->isCompleteOrCancelled()){
-            throw new \Exception("Order has been already been complete or cancelled");
+            throw new \Exception("Job has been already been complete or cancelled");
         }
 
         if($order->status==="Released"){
-            throw new \Exception("Order has already been released");
+            throw new \Exception("Job has already been released");
         }
 
         if(!$order->isPaid()){
-            throw new \Exception("Order has not been paid");
+            throw new \Exception("Job has not been paid");
         }
 
         if ($bid->save()) {

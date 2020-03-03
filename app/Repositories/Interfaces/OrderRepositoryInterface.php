@@ -1,6 +1,8 @@
 <?php
 namespace App\Repositories\Interfaces;
 
+use App\Models\Order\Order;
+
 interface OrderRepositoryInterface{
     //Contractor Methods
 	public function createConcrete($order_request);
@@ -19,5 +21,5 @@ interface OrderRepositoryInterface{
     public function getRepAcceptedOrders();
     public function getRepPendingOrders();
 
-    public function markAsPaid($order_id);
+    public function markAsPaid(Order $order_id);
 }

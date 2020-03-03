@@ -385,10 +385,20 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
 
     }
 
-    public function markAsPaid($order)
+    public function markAsPaid(Order $order)
     {
+        if($order->isCompleteOrCancelled()){
+            throw new \Exception("Job has been already completed or cancelled");
+        }
+        if($order["status"]==="Waiting Payment Confirmation"){
+            throw new \Exception("Job has been already been waiting for payment");
+        }
         if($order["status"]==="Paid"){
-            throw new \Exception("Order has been already been marked as Paid");
+            throw new \Exception("Job has been already been marked as Paid");
+        }
+
+        if($order["status"]==="Released"){
+            throw new \Exception("Job has been already been released");
         }
         return $order->update([
             "status"=>"Waiting Payment Confirmation"

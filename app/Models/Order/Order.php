@@ -101,4 +101,12 @@ class Order extends Model
     public function isPaid(){
         return in_array($this->status,array("Paid"));
     }
+
+    public function isReleased(){
+        return in_array($this->status,array("Released"));
+    }
+
+    public function isCompleteOrCancelled(){
+        return in_array($this->status,array("Complete","Cancelled","archive"));
+    }
 }
