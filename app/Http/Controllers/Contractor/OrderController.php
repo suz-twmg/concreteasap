@@ -305,7 +305,7 @@ class OrderController extends Controller
             if(!Gate::allows("order-owner",$order)) {
                 throw new \Exception('Job Number does not exist.');
             }
-            $this->orderRep->markAsPaid($order_id);
+            $this->orderRep->markAsPaid($order);
             $accepted_bid= $order->getAcceptedBid();
             $notification = [
                 "msg" => "Job {$order->job_id} has been mark as Paid.",
