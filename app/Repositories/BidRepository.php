@@ -184,6 +184,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
         if(!$bid->isDayOfPour()){
             throw new \Exception("Job can only be released on scheduled day of pour");
         }
+
         if($bid->isCompleteOrCancelled()){
             throw new \Exception("Job has been already been complete or cancelled");
         }

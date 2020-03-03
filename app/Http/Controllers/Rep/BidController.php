@@ -150,7 +150,7 @@ class BidController extends Controller
                     )
                 ];
                 Notification::send(User::find($order->user_id), new AppNotification($notification));
-                return response()->json(array("msg" =>"Job {$result["job_id"]} Release has been sent"), 200);
+                return response()->json(array("msg" =>"Job {$result["job_id"]} has been released."), 200);
             }
             else{
                 return response()->json(array("Order has been already Complete or Cancelled"),200);
