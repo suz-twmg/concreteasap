@@ -19,7 +19,7 @@ class CreateOrdersTable extends Migration
             $table->integer("user_id")->unsigned();
             $table->string("status");
             $table->string("order_type");
-            $table->boolean("confirm_delivery");
+            $table->string("job_id");
             $table->timestamps();
         });
     }
