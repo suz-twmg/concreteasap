@@ -133,7 +133,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
     public function getRepAcceptedBids()
     {
         $orders = $this->user->bids()->whereHas("order",function($query){
-            $query->whereIn("status",["Released", "Paid","Accepted"]);
+            $query->whereIn("status",["Released", "Paid","Accepted","Waiting Payment Confirmation"]);
         })->with(["order" => function ($query) {
             $query->has("orderConcrete")->with(["orderConcrete","message","user" => function ($query) {
                 $query->with(['detail' => function ($query) {
@@ -157,7 +157,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
         $order=$bid->order;
         if($bid->status!=="Complete"&&$bid->status!=="Cancelled"&&$order->status!=="archive"){
             if ($bid) {
-                $bid->order()->update(["confirm_payment" =>true]);
+                $bid->order()->update(["status" =>"Paid"]);
                 $order_type=$bid->getOrderType();
             }
             return ["order"=>$order,"order_type"=>$order_type];

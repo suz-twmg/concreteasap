@@ -236,7 +236,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
                     $query->select(["user_id", "company", "first_name", "last_name", "phone_number", "profile_image", "abn"]);
                 }])->select(["id", "email"]);
             }])->where("status", "Accepted");
-        }])->whereIn("status", ["Accepted", "Released", "Paid"])->orderBy("id", "DESC")->get();
+        }])->whereIn("status", ["Accepted", "Released", "Paid","Waiting Payment Confirmation"])->orderBy("id", "DESC")->get();
     }
 
     //Rep Functions
@@ -252,7 +252,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         })->with(["orderConcrete" => function ($query) use ($columns) {
             $query->select($columns);
         }])->whereNotIn("id", Bids::where("user_id", "=", $this->user->id)->get(['order_id'])->toArray())
-            ->whereNotIn("status", ["Accepted", "Released", "Paid", "Complete", "Cancelled", "archive"])
+            ->whereNotIn("status", ["Accepted", "Released", "Paid", "Complete", "Cancelled", "archive","Waiting Payment Confirmation"])
             ->orderBy("id", "DESC");
 
         $orders = $orders->paginate(200);
@@ -285,7 +285,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
     public function getRepAcceptedOrders()
     {
         $orders = $this->user->bids()->whereHas("order", function ($query) {
-            $query->whereIn("status", ["Released", "Paid", "Accepted"]);
+            $query->whereIn("status", ["Released", "Paid", "Accepted","Waiting Payment Confirmation"]);
         })->with(["order" => function ($query) {
             $query->has("orderConcrete")->with(["orderConcrete", "user" => function ($query) {
                 $query->with(['detail' => function ($query) {
@@ -347,7 +347,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
             }])->where("status", "Accepted");
         }])->whereHas("bids", function ($query) {
             $query->where("date_delivery", \Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d"));
-        })->whereIn("status", ["Accepted", "Released", "Paid"])->get();
+        })->whereIn("status", ["Accepted", "Released", "Paid","Waiting Payment Confirmation"])->get();
 
         return $orders;
     }
@@ -405,8 +405,11 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
 
     public function markAsPaid($order)
     {
+        if($order->status==="Paid"){
+            throw new \Exception("Order has been already been marked as Paid");
+        }
         $order->update([
-            "status"=>"Paid"
+            "status"=>"Waiting Payment Confirmation"
         ]);
         return $order;
         // TODO: Implement markAsPaid() method.
