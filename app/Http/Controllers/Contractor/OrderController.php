@@ -311,7 +311,7 @@ class OrderController extends Controller
 //            var_dump($accepted_bid["id"]);
             $notification = [
                 "msg" => "Job {$order->job_id} has been requested to be marked as Paid.",
-                "route" => "Previous Bid Detail",
+                "route" => "Accepted Bid Detail",
                 "params" => array(
                     "bid_id" =>$accepted_bid["id"]
                 )
