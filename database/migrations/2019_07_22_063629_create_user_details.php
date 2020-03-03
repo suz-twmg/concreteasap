@@ -22,7 +22,7 @@ class CreateUserDetails extends Migration
             $table->string("phone_number");
             $table->string("state");
             $table->string("city");
-            $table->text("profile_image")->nullable();
+            $table->text("profile_image")->nullable(true);
             $table->integer("user_id")->unsigned();
             $table->timestamps();
         });
