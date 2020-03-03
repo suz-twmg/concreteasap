@@ -93,4 +93,12 @@ class Order extends Model
     public function scopeAuthuser($query){
         return $query->where("user_id",'=',Auth::user()->id);
     }
+
+    public function isAwaiting(){
+        return in_array($this->status,array("Waiting Payment Confirmation"));
+    }
+
+    public function isPaid(){
+        return in_array($this->status,array("Paid"));
+    }
 }

@@ -300,24 +300,6 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         // TODO: Implement getRepAcceptedOrders() method.
     }
 
-    public function releaseOrder($bid_id)
-    {
-        try {
-            $bid = Bids::find($bid_id);
-            $bid->released = true;
-            $order = Order::find($bid->order_id);
-            if ($bid->status !== "Complete" && $bid->status !== "Cancelled" && $order->status !== "archive") {
-                if ($bid->save()) {
-                    $order->status = "Released";
-                    $order->save();
-                    return ["order" => $order, "order_type" => $bid->getOrderType(), "job_id" => $order->job_id];
-                }
-            }
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
     public function archiveOrder($order_id)
     {
         $order = Order::find($order_id);

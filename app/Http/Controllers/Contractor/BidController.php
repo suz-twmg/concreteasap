@@ -90,12 +90,13 @@ class BidController extends Controller
      * @throws \Exception
      */
     public function rejectOrderBid(Request $request){
+        $validator = Validator::make($request->all(), [
+            "bid_id"=>"required"
+        ]);
         try{
-            $validator = Validator::make($request->all(), [
-                "bid_id"=>"required"
-            ]);
             if(!$validator->fails()) {
                 $bid_id = $request->get("bid_id");
+                $bid=
                 $result = $this->bid_repo->rejectBid($bid_id);
                 if (isset($result["bid_user"])) {
                     $bid_user=$result["bid_user"];

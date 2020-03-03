@@ -101,14 +101,16 @@ Route::group([
     Route::get('accepted_orders', 'Rep\OrderController@getAcceptedOrders');
     Route::get('debug_accepted', 'Rep\OrderController@getDebugAcceptedOrders');
     Route::post('cancel_order', 'Rep\OrderController@cancelOrder');
-    Route::post('updatePaymentMethod', 'Rep\BidController@updatePaymentMethod');
 
     Route::post('bid', 'Rep\BidController@saveBid');
     Route::get('bid/previous_order', 'Rep\BidController@previousOrder');
     Route::get("bid/accepted_order", "Rep\BidController@acceptedOrder");
+
+    Route::post('updatePaymentMethod', 'Rep\BidController@updatePaymentMethod');
+    Route::post("release_order", "Rep\BidController@releaseOrder");
     Route::get('bids', 'Rep\BidController@getUserBid');
     Route::post('pay/bid', 'Payment\PaymentController@payBidAmount');
-    Route::post("release_order", "Rep\OrderController@releaseOrder");
+
 });
 
 Route::group([

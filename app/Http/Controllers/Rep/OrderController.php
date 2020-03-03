@@ -95,39 +95,6 @@ class OrderController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function releaseOrder(Request $request)
-    {
-        try {
-            $result=$this->order_repo->releaseOrder($request->get("bid_id"));
-
-            if(isset($result["order"])){
-                $order=$result["order"];
-                //$user=$order->user();
-                $notification = [
-                    "msg" => "Job {$result["job_id"]} has been released.",
-                    "route" => "DayOfPour",
-                    "params" => array(
-                        "order_id" => $order["id"],
-                        "order_type"=>$result["order_type"]
-                    )
-                ];
-                Notification::send(User::find($order->user_id), new AppNotification($notification));
-                return response()->json(array("msg" =>"Job {$result["job_id"]} Release has been sent"), 200);
-            }
-            else{
-                return response()->json(array("Order has been already Complete or Cancelled"),200);
-            }
-        } catch (\Exception $e) {
-            return $this->handle_exception($e->getMessage());
-        }
-    }
-
     public function setMessagePrice(Request $request){
         try{
             $validator = Validator::make($request->all(), [

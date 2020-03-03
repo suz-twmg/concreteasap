@@ -36,4 +36,12 @@ class Bids extends Model
     public function getOrderType(){
         return $this->date_delivery===\Illuminate\Support\Carbon::now('Australia/Sydney')->format("Y-m-d")?"pour_orders":"accepted_orders";
     }
+
+    /**
+     * @method isCompleteorCancelled
+     * @return bool
+     */
+    public function isCompleteOrCancelled(){
+        return in_array($this->status,array("Complete","Cancelled","archive"));
+    }
 }

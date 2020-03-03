@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Rep;
 
+use App\Models\Bids\Bids;
 use App\Notifications\AppNotification;
 use App\Repositories\Interfaces\BidRepositoryInterface;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
+use App\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -98,32 +100,62 @@ class BidController extends Controller
         ]);
         try{
             if(!$validator->fails()){
-                $result=$this->bid_repo->updatePaymentMethod($request->get("bid_id"),$request->get("payment_method"));
-                if(isset($result["order"])){
-                    $order=$result["order"];
-                    $notification=[
-                        "msg"=>"Job {$order["job_id"]} has been confirmed as paid.",
-                        "route" => "DayOfPour",
-                        "params" => array(
-                            "order_id"=>$order->id,
-                            "order_type"=>$result["order_type"]
-                        )
-                    ];
-                    if($order){
-                        Notification::send($order->user()->get(),new AppNotification($notification));
-                        return response()->json(array("msg"=>"Notification has been sent to contractor."),200);
-                    }
-                    else{
-                        return response()->json(array("msg"=>"There is some issue in the server."),400);
-                    }
+                $bid=Bids::findOrFail($request->get("bid_id"));
+                $result=$this->bid_repo->updatePaymentMethod($bid,$request->get("payment_method"));
+                $order=$result["order"];
+                $notification=[
+                    "msg"=>"Job {$order["job_id"]} has been confirmed as paid.",
+                    "route" => "DayOfPour",
+                    "params" => array(
+                        "order_id"=>$order->id,
+                        "order_type"=>$result["order_type"]
+                    )
+                ];
+                if($order){
+                    Notification::send($order->user()->get(),new AppNotification($notification));
+                    return response()->json(array("msg"=>"Notification has been sent to contractor."),200);
                 }
                 else{
-                    return response()->json(array("msg"=>"Order has been already complete or cancelled"),200);
+                    return response()->json(array("msg"=>"There is some issue in the server."),400);
                 }
             }
 
         }
         catch (\Exception $e){
+            return $this->handle_exception($e->getMessage());
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function releaseOrder(Request $request)
+    {
+        try {
+            $bid=Bids::findOrFail($request->get("bid_id"));
+            $result=$this->bid_repo->releaseOrder($bid);
+
+            if(isset($result["order"])){
+                $order=$result["order"];
+                //$user=$order->user();
+                $notification = [
+                    "msg" => "Job {$result["job_id"]} has been released.",
+                    "route" => "DayOfPour",
+                    "params" => array(
+                        "order_id" => $order["id"],
+                        "order_type"=>$result["order_type"]
+                    )
+                ];
+                Notification::send(User::find($order->user_id), new AppNotification($notification));
+                return response()->json(array("msg" =>"Job {$result["job_id"]} Release has been sent"), 200);
+            }
+            else{
+                return response()->json(array("Order has been already Complete or Cancelled"),200);
+            }
+        } catch (\Exception $e) {
             return $this->handle_exception($e->getMessage());
         }
     }

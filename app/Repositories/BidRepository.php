@@ -149,24 +149,47 @@ class BidRepository implements Interfaces\BidRepositoryInterface
         // TODO: Implement getRepAcceptedOrders() method.
     }
 
-    public function updatePaymentMethod(int $bid_id, string $payment_method)
+    public function updatePaymentMethod(Bids $bid, string $payment_method)
     {
         $order = null;
         $order_type=null;
-        $bid = Bids::find($bid_id);
+
         $order=$bid->order;
-        if($bid->status!=="Complete"&&$bid->status!=="Cancelled"&&$order->status!=="archive"){
-            if ($bid) {
-                $bid->order()->update(["status" =>"Paid"]);
-                $order_type=$bid->getOrderType();
-            }
-            return ["order"=>$order,"order_type"=>$order_type];
-        }
-        else{
-            return [];
+
+        if($bid->isCompleteOrCancelled()){
+            throw new \Exception("Order has been already been complete or cancelled");
         }
 
+        if($order->isPaid()){
+            throw new \Exception("Order has been already been paid");
+        }
+
+        $bid->order()->update(["status" =>"Paid"]);
+        $order_type=$bid->getOrderType();
+
+        return ["order"=>$order,"order_type"=>$order_type];
+
         // TODO: Implement updatePaymentMethod() method.
+    }
+
+    public function releaseOrder(Bids $bid)
+    {
+        $bid->released = true;
+        $order = $bid->order;
+
+        if($bid->isCompleteOrCancelled()){
+            throw new \Exception("Order has been already been complete or cancelled");
+        }
+
+        if($order->isPaid()){
+            throw new \Exception("Order has been already been paid");
+        }
+
+        if ($bid->save()) {
+            $order->status = "Released";
+            $order->save();
+            return ["order" => $order, "order_type" => $bid->getOrderType(), "job_id" => $order->job_id];
+        }
     }
 
     public function getRepBidOrders()
