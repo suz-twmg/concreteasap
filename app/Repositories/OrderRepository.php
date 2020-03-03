@@ -408,10 +408,9 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         if($order["status"]==="Paid"){
             throw new \Exception("Order has been already been marked as Paid");
         }
-        $order->update([
+        return $order->update([
             "status"=>"Waiting Payment Confirmation"
         ]);
-        return $order;
         // TODO: Implement markAsPaid() method.
     }
 }
