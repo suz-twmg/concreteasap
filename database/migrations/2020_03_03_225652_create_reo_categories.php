@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReoProducts extends Migration
+class CreateReoCategories extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateReoProducts extends Migration
      */
     public function up()
     {
-        Schema::create('reo_products', function (Blueprint $table) {
+        Schema::create('reo_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string("product_name");
-            $table->string("value");
-            $table->unsignedBigInteger("order_id");
-            $table->foreign('order_id')->references('id')->on('orders');
+            $table->string("name")->unique();
+            $table->string("description");
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateReoProducts extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reo_products');
+        Schema::dropIfExists('reo_categories');
     }
 }
