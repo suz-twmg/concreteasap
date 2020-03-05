@@ -70,16 +70,16 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
         $order_concrete->order_id = $order->id;
         $order_concrete->touch();
 
-        $result = false;
         try {
             DB::beginTransaction();
             $order->save();
-            $result = $order->orderConcrete()->save($order_concrete);
+            $order->orderConcrete()->save($order_concrete);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
+            $order=null;
         }
-        return $result;
+        return $order;
     }
 
     public function updateConcrete($order_request)

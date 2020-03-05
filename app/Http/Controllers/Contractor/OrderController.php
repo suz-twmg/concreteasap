@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Contractor;
 
 use App\Models\Order\Order;
 use App\Notifications\AppNotification;
+use App\Role;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -87,8 +88,18 @@ class OrderController extends Controller
         ]);
 
         if (!$validator->fails()) {
-            if ($this->orderRep->createConcrete($request->all())) {
-                return response()->json(array("message" => "Your Order has been placed"), 200);
+            $order=$this->orderRep->createConcrete($request->all());
+            if (!is_null($order)) {
+                $notification = [
+                    "msg" => "New job {$order->job_id} has been placed.",
+                    "route" => "Bid Detail List"
+                ];
+                $concrete_reps=(Role::find(2))->users();
+                Notification::send($concrete_reps, new AppNotification($notification));
+                return response()->json(array("message" => "The Job has been placed"), 200);
+            }
+            else{
+                return response()->json(array("message" => "There is an issue while placing a job."), 200);
             }
 
         } else {
