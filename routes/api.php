@@ -81,13 +81,17 @@ Route::group([
 
     Route::post('order/markPaid','Contractor\OrderController@markOrderAsPaid');
 
-
     Route::post('order/completeOrder', 'Contractor\OrderController@completeOrder');
     Route::post('order/confirmOrderDelivery', 'Contractor\OrderController@confirmOrderDelivery');
     Route::post('order/modifyOrder', 'Contractor\OrderController@updateOrder');
     Route::post('order/cancelOrder', 'Contractor\OrderController@cancelOrder');
     Route::post('order/archiveOrder', 'Contractor\OrderController@archiveOrder');
 
+    Route::post("order/reo","Contractor\REO\OrderController@create");
+    Route::get("order/reo/pending","Contractor\REO\OrderController@getPending");
+    Route::get("order/reo/{id}/bids","Contractor\REO\OrderController@getBids");
+    Route::get("order/reo/acceptedOrders","Contractor\REO\OrderController@getAcceptedOrders");
+    Route::get("order/reo/getDayOfPourOrders","Contractor\REO\OrderController@getDayOfPourOrders");
 
 
 });

@@ -35,6 +35,10 @@ class Order extends Model
         return $this->hasOne(orderConcrete::class,"order_id","id");
     }
 
+    public function orderDetail(){
+        $this->hasOne(orderDetail::class,"order_id","id");
+    }
+
     public function orderReo(){
         return $this->hasMany(orderReo::class);
     }
