@@ -12,8 +12,8 @@ class ReoCategorySeeder extends Seeder
     public function run()
     {
         //
-//        $reo_category=factory("App\Models\")->create([
-//
-//        ]);
+        $reo_category=factory("App\Models\Order\orderReoProducts")->create([
+
+        ]);
     }
 }
