@@ -94,7 +94,7 @@ class OrderController extends Controller
                     "msg" => "New job {$order->job_id} has been placed.",
                     "route" => "Bid Detail List"
                 ];
-                $concrete_reps=(Role::find(2))->users();
+                $concrete_reps=(Role::find(2))->users;
                 Notification::send($concrete_reps, new AppNotification($notification));
                 return response()->json(array("message" => "The Job has been placed"), 200);
             }
