@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\User;
 
 use App\Models\Order\orderConcrete;
+use App\Models\Order\orderReo;
 
 /**
  * @method static find(int $order_id)
@@ -32,6 +33,14 @@ class Order extends Model
     public function orderConcrete()
     {
         return $this->hasOne(orderConcrete::class,"order_id","id");
+    }
+
+    public function orderDetail(){
+        $this->hasOne(orderDetail::class,"order_id","id");
+    }
+
+    public function orderReo(){
+        return $this->hasMany(orderReo::class);
     }
 
     public function user(){
