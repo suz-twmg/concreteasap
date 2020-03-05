@@ -91,7 +91,7 @@ class OrderController extends Controller
             $order=$this->orderRep->createConcrete($request->all());
             if (!is_null($order)) {
                 $notification = [
-                    "msg" => "New job {$order->job_id} request has been posted.",
+                    "msg" => "New job request {$order->job_id} has been posted.",
                     "route" => "Bid Detail List"
                 ];
                 $concrete_reps=(Role::find(2))->users;
