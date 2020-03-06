@@ -24,18 +24,10 @@ Route::get('/',function(){
 });
 
 Route::get('/test',function(\App\Repositories\UserRepository $user_repo){
-    $order_user=$user_repo->getOrderUser(234);
-    $notification = [
-        "msg" => "You have received new bid.",
-        "route"=>"ViewBids",
-        "btn"=>["id"=>"VIEW_BIDS","text"=>"View Bid"],
-        "params"=>array(
-            "order_id"=>234
-        )
-    ];
-    Notification::send($order_user, new AppNotification($notification));
-//    var_dump(phpinfo());
-//   return view("test");
+    $category=new \App\Models\Order\orderReoCategory();
+    $category->name="Mesh";
+    $category->save();
+    var_dump($category);
 });
 
 
