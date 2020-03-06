@@ -14,7 +14,7 @@ class StarterBarSeeder extends Seeder
     public function run()
     {
         //
-        $starter_bar=orderReoCategory::where("slug","starter_bar")->first();
+        $starter_bar=orderReoCategory::where("slug","starter_bar_mesh")->first();
 
         factory(orderReoProducts::class)->create([
             "name"=>"R10 1000X200",
