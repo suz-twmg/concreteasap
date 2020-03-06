@@ -12,8 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(UsersTableSeeder::class);
-        $this->call(ReoCategorySeeder::class);
         $this->call(ReoCategoriesFactory::class);
-        $this->call(ReoProductsFactory::class);
+//        $this->call(ReoProductsFactory::class);
     }
 }
