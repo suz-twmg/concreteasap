@@ -16,6 +16,8 @@ class CreateReoCategories extends Migration
         Schema::create('reo_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string("name")->unique();
+            $table->string("slug");
+            $table->string("description",255);
             $table->string("description");
             $table->timestamps();
         });
