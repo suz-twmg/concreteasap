@@ -18,13 +18,6 @@ class OrderController extends Controller
     }
 
     public function create(ContractReoRequest $request){
-
+        
     }
-
-    public function getAllPendingOrders(){
-
-    }
-
-
-
 }
