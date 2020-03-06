@@ -14,7 +14,7 @@ class AccesoriesTypeSeeder extends Seeder
     public function run()
     {
         //
-        $accesories_type=orderReoCategory::where("slug","accessories")->first();
+        $accesories_type=orderReoCategory::where("slug","accessories_type")->first();
 
         factory(orderReoProducts::class)->create([
             "name"=>"75MMX25M",
@@ -23,31 +23,43 @@ class AccesoriesTypeSeeder extends Seeder
         ]);
 
         factory(orderReoProducts::class)->create([
-            "name"=>"75MMX25M",
+            "name"=>"100MMX25M",
             "description"=>"Accessories",
             "category_id"=>$accesories_type->id
         ]);
 
         factory(orderReoProducts::class)->create([
-            "name"=>"75MMX25M",
+            "name"=>"125MMX25M",
             "description"=>"Accessories",
             "category_id"=>$accesories_type->id
         ]);
 
         factory(orderReoProducts::class)->create([
-            "name"=>"75MMX25M",
+            "name"=>"150MMX25M",
             "description"=>"Accessories",
             "category_id"=>$accesories_type->id
         ]);
 
         factory(orderReoProducts::class)->create([
-            "name"=>"75MMX25M",
+            "name"=>"200MMX25M",
             "description"=>"Accessories",
             "category_id"=>$accesories_type->id
         ]);
 
         factory(orderReoProducts::class)->create([
-            "name"=>"75MMX25M",
+            "name"=>"250MMX25M",
+            "description"=>"Accessories",
+            "category_id"=>$accesories_type->id
+        ]);
+
+        factory(orderReoProducts::class)->create([
+            "name"=>"2400MMX75MM",
+            "description"=>"Accessories",
+            "category_id"=>$accesories_type->id
+        ]);
+
+        factory(orderReoProducts::class)->create([
+            "name"=>"2400MMX100MM",
             "description"=>"Accessories",
             "category_id"=>$accesories_type->id
         ]);
