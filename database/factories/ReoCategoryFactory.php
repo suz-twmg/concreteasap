@@ -9,6 +9,6 @@ $factory->define(orderReoCategory::class, function (Faker $faker) {
     return [
         //
         'name'=>$faker->name,
-        'description'=>$faker->description,
+//        'description'=>$faker->description,
     ];
 });

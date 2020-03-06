@@ -13,14 +13,14 @@ class ReoProductsFactory extends Seeder
      */
     public function run()
     {
-        $reo=orderReoProducts::where("slug","")->first();
+//        $reo=orderReoProducts::where("slug","")->first();
         //
-        factory("App\Models\Order\orderReoProducts")->create([
-            "name"=>"Mesh 6mx2.4m SL81",
-            "description"=>"Mesh"
-        ])->save(function($product) use($reo){
-            $product->orders()->attach($reo);
-        });
+//        factory("App\Models\Order\orderReoProducts")->create([
+//            "name"=>"Mesh 6mx2.4m SL81",
+//            "description"=>"Mesh"
+//        ])->save(function($product) use($reo){
+//            $product->orders()->attach($reo);
+//        });
 
 //        factory("App\Models\Order\orderReoProducts")->create([
 //            "name"=>"Mesh 6mx2.4m SL62",
