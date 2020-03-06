@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Order\orderReoProducts;
+use App\Models\Order\orderReoCategory;
 use Illuminate\Database\Seeder;
 
 class MeshSeeder extends Seeder
@@ -13,7 +13,7 @@ class MeshSeeder extends Seeder
     public function run()
     {
         //
-        $reo=orderReoProducts::where("slug","mesh")->first();
+        $reo=orderReoCategory::where("slug","mesh")->first();
         //
         factory("App\Models\Order\orderReoProducts")->create([
             "name"=>"Mesh 6mx2.4m SL81",
