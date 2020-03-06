@@ -9,9 +9,6 @@ use App\User;
 
 use App\Models\Order\orderReo;
 
-/**
-* @method static find(int $order_id)
-*/
 class orderReoProducts extends Model
 {
     protected $table="reo_products";
