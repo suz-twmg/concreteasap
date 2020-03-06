@@ -52,7 +52,7 @@ class ResetPasswordController extends Controller
      */
     public function reset(Request $request)
     {
-//        var_dump($request->all());
+        var_dump($request->all());
 //        var_dump($this->rules());
         $validator=Validator::make($this->credentials($request),$this->rules());
         if($validator->fails()){
