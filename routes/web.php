@@ -24,12 +24,7 @@ Route::get('/',function(){
 });
 
 Route::get('/test',function(\App\Repositories\UserRepository $user_repo){
-    $category=new \App\Models\Order\orderReoCategory();
-    $category->name="Mesh";
-    $category->slug="mesh";
-    $category->description="abc";
-    $category->save();
-    var_dump($category);
+
 });
 
 
