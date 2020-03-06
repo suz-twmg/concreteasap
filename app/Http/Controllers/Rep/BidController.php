@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Rep;
 
-use App\Models\Bids\Bids;
+use App\Models\Bids\Bid;
 use App\Notifications\AppNotification;
 use App\Repositories\Interfaces\BidRepositoryInterface;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
@@ -70,7 +70,7 @@ class BidController extends Controller
         ]);
         try{
             if(!$validator->fails()){
-                $bid=Bids::findOrFail($request->get("bid_id"));
+                $bid=Bid::findOrFail($request->get("bid_id"));
                 $result=$this->bid_repo->updatePaymentMethod($bid,$request->get("payment_method"));
                 $order=$result["order"];
                 $notification=[
@@ -105,7 +105,7 @@ class BidController extends Controller
     public function releaseOrder(Request $request)
     {
         try {
-            $bid=Bids::findOrFail($request->get("bid_id"));
+            $bid=Bid::findOrFail($request->get("bid_id"));
             $result=$this->bid_repo->releaseOrder($bid);
 
             if(isset($result["order"])){

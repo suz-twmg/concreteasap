@@ -103,7 +103,6 @@ Route::group([
     Route::get('orders', 'Rep\OrderController@getRepAllOrders');
     Route::get('pending_orders', 'Rep\OrderController@getPendingOrders');
     Route::get('accepted_orders', 'Rep\OrderController@getAcceptedOrders');
-    Route::get('debug_accepted', 'Rep\OrderController@getDebugAcceptedOrders');
     Route::post('cancel_order', 'Rep\OrderController@cancelOrder');
 
     Route::post('bid', 'Rep\BidController@saveBid');
@@ -112,9 +111,10 @@ Route::group([
 
     Route::post('updatePaymentMethod', 'Rep\BidController@updatePaymentMethod');
     Route::post("release_order", "Rep\BidController@releaseOrder");
-    Route::get('bids/{bids}', 'Rep\BidController@getUserBid');
+    Route::get('bids', 'Rep\BidController@getUserBid');
     Route::post('pay/bid', 'Payment\PaymentController@payBidAmount');
 
+    Route::post('reo/bid/{Bid}','Reo_Rep\ReoBidController@bidReoOrder');
 });
 
 Route::group([

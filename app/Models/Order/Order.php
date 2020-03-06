@@ -2,7 +2,7 @@
 
 namespace App\Models\Order;
 
-use App\Models\Bids\Bids;
+use App\Models\Bids\Bid;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -48,7 +48,7 @@ class Order extends Model
     }
 
     public function bids(){
-        return $this->hasMany(Bids::class);
+        return $this->hasMany(Bid::class);
     }
 
     public  function review(){

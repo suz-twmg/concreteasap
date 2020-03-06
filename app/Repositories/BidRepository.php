@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Model\Bids\Bid_Transactions;
-use App\Models\Bids\Bids;
+use App\Models\Bids\Bid;
 use App\Models\Order\Order;
 use App\User;
 use Illuminate\Support\Facades\Hash;
@@ -17,7 +17,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
     private $user;
     private $custom_columns;
 
-    public function __construct(Bids $bids)
+    public function __construct(Bid $bids)
     {
         $this->bids = $bids;
         $this->user = auth('api')->user();
@@ -29,7 +29,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
     public function save($price, $order_id, $user_id, $transaction, $date_delivery, $time_delivery)
     {
         $price = (float)$price;
-        $bid = new Bids();
+        $bid = new Bid();
         $bid->rep_price = $price;
         $bid->payment_type = "none";
         $bid->released = false;
@@ -71,16 +71,16 @@ class BidRepository implements Interfaces\BidRepositoryInterface
 
     public function acceptBid(int $bid_id, string $payment_method)
     {
-        $bid = Bids::where("id", $bid_id)->first();
+        $bid = Bid::where("id", $bid_id)->first();
         if ($bid) {
-            $bids = Bids::where("order_id", $bid->order_id)->whereNotIn("id", [$bid_id])->update(array("status" => "Rejected"));
+            $bids = Bid::where("order_id", $bid->order_id)->whereNotIn("id", [$bid_id])->update(array("status" => "Rejected"));
             $bid->payment_type=$payment_method;
             $bid->status = "Accepted";
             if ($bid->save()) {
                 $order=Order::where("id", $bid->order_id)->first();
                 $all_bids = [
                     "accepted_users" => $bid->user_id,
-                    "rejected_users" => Bids::where("order_id", "=", $bid->order_id)->where("status", '=', 'Rejected')->pluck("user_id")->toArray(),
+                    "rejected_users" => Bid::where("order_id", "=", $bid->order_id)->where("status", '=', 'Rejected')->pluck("user_id")->toArray(),
                     "bid"=>$bid,
                     "job_id"=>$order->job_id
                 ];
@@ -95,7 +95,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
 
     public function rejectBid(int $bid_id)
     {
-        $bid = Bids::where("id", $bid_id)->first();
+        $bid = Bid::where("id", $bid_id)->first();
         if ($bid) {
             $bid->status = "Rejected";
             $order=Order::find($bid->order_id);
@@ -109,7 +109,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
 
     public function getUserBids($user_id, $paginate = 5)
     {
-        return Bids::with(["order" => function ($query) {
+        return Bid::with(["order" => function ($query) {
             $query->orderBy("id", "DESC");
         }])->get();
     }
@@ -117,7 +117,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
     public function getOrderBids(int $order_id, int $user_id)
     {
         // TODO: Implement getOrderBids() method.
-        $bids = Bids::where("order_id", $order_id)->where("user_id", $user_id);
+        $bids = Bid::where("order_id", $order_id)->where("user_id", $user_id);
         return $bids;
     }
 
@@ -149,7 +149,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
         // TODO: Implement getRepAcceptedOrders() method.
     }
 
-    public function updatePaymentMethod(Bids $bid, string $payment_method)
+    public function updatePaymentMethod(Bid $bid, string $payment_method)
     {
         $order = null;
         $order_type=null;
@@ -176,7 +176,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
         // TODO: Implement updatePaymentMethod() method.
     }
 
-    public function releaseOrder(Bids $bid)
+    public function releaseOrder(Bid $bid)
     {
         $bid->released = true;
         $order = $bid->order;
@@ -212,7 +212,7 @@ class BidRepository implements Interfaces\BidRepositoryInterface
     public function messageOrder(int $bid_id, float $quantity)
     {
         $user=null;
-        $bid= Bids::find($bid_id);
+        $bid= Bid::find($bid_id);
         $bid_message=$bid->message()->firstOrCreate([
             "quantity"=>$quantity,
             "status"=>"Awaiting",

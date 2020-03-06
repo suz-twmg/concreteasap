@@ -6,6 +6,7 @@ use App\Events\ReoRep\Bid\ReoBidOrderSuccess;
 use App\Helpers\NotificationHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Reo_Rep\ReoBidRequest;
+use App\Models\Bids\Bid;
 use App\Repositories\Rep_REO\REO\BidRepository;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,7 @@ class ReoBidController extends Controller
     }
 
     //
-    public function bidReoOrder(ReoBidRequest $reo_bid_request){
+    public function bidReoOrder(Bid $bid, ReoBidRequest $reo_bid_request){
         $order=$this->reo_bid_repo->create($reo_bid_request,$this->user->id);
         event(new ReoBidOrderSuccess($order));
     }

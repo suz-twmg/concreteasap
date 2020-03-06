@@ -5,7 +5,7 @@ namespace App\Repositories\Rep_REO\REO;
 
 
 use App\Http\Requests\Reo_Rep\ReoBidRequest;
-use App\Models\Bids\Bids;
+use App\Models\Bids\Bid;
 use App\Models\Order\Order;
 use App\User;
 

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\User;
 use App\Models\Order\Order;
 
-class Bids extends Model
+class Bid extends Model
 {
     protected $fillable=['released'];
     protected $hidden = [
