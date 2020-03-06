@@ -59,6 +59,11 @@ class Order extends Model
         return $this->hasMany(orderMessage::class,"order_id","id");
     }
 
+    public function products()
+    {
+        return $this->belongsToMany(orderReoProducts::class, "order_reo");
+    }
+
     public function getAcceptedBidUser(){
         $bid=$this->bids()->where("status","=","Accepted")->first();
         $bid_user=$bid->user()->get();
