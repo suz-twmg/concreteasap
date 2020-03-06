@@ -17,7 +17,6 @@ class CreateReoCategories extends Migration
             $table->bigIncrements('id');
             $table->string("name")->unique();
             $table->string("slug");
-            $table->string("description",255);
             $table->string("description");
             $table->timestamps();
         });
