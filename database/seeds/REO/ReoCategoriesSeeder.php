@@ -61,12 +61,6 @@ class ReoCategoriesSeeder extends Seeder
         ]);
 
         factory("App\Models\Order\orderReoCategory")->create([
-            "name"=>"Expansion Joints",
-            "slug"=>"expansion_joints",
-            "description"=>"Expansion Joints"
-        ]);
-
-        factory("App\Models\Order\orderReoCategory")->create([
             "name"=>"Bar Chairs",
             "slug"=>"bar_chairs",
             "description"=>"Bar Chairs"
