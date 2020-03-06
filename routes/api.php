@@ -112,7 +112,7 @@ Route::group([
 
     Route::post('updatePaymentMethod', 'Rep\BidController@updatePaymentMethod');
     Route::post("release_order", "Rep\BidController@releaseOrder");
-    Route::get('bids', 'Rep\BidController@getUserBid');
+    Route::get('bids/{bids}', 'Rep\BidController@getUserBid');
     Route::post('pay/bid', 'Payment\PaymentController@payBidAmount');
 
 });

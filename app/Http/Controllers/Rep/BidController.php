@@ -26,36 +26,6 @@ class BidController extends Controller
         $this->user=auth('api')->user();
     }
 
-//    /**
-//     * Store a newly created bid in storage.
-//     *
-//     * @param  \Illuminate\Http\Request  $request
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function saveBid(Request $request){
-//        $validator = Validator::make($request->all(), [
-//            'price' => 'required',
-//            'order_id'=>'required',
-//        ]);
-//
-//        if(!$validator->fails()){
-//            try{
-//                $date_delivery=!$request->get("date_delivery")?$request->get("date_delivery"):"";
-//                $time_delivery=!$request->get("time_delivery")?$request->get("time_delivery"):"";
-//                if($this->bid_repo->save($request["price"],$request["order_id"],$this->user->id,$date_delivery,$time_delivery)){
-//                    return response()->json(array("message"=>"Successfully Bid"),200);
-//                }
-//            }
-//            catch(\Exception $e){
-//                return response()->json(["message"=>$e->getMessage()],401);
-//            }
-//        }
-//        else{
-//            return response()->json(["message"=>$validator->errors()],401);
-//        }
-//
-//    }
-
     public function getUserBid(){
         try{
             return $this->bid_repo->getUserBids($this->user->id);
