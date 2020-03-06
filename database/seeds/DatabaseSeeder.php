@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        //I need to merge this functionality
 //        $this->call(UsersTableSeeder::class);
         $this->call(ReoCategoriesFactory::class);
 //        $this->call(ReoProductsFactory::class);
