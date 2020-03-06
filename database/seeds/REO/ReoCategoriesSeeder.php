@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ReoCategoriesFactory extends Seeder
+class ReoCategoriesSeeder extends Seeder
 {
     /**
      * Run the database seeds.

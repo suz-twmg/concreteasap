@@ -44,15 +44,15 @@ class UsersTableSeeder extends Seeder
 	    	$admin_user->roles()->sync($admin_role);
 	    });
 
-//	    $rep_user = factory("App\User")->create([
-//        	'username'=>'sujan',
-//        	"device_id"=>"",
-//        	'status'=>'verified',
-//	        'email'=>"sujan@twmg.com.au",
-//	        "password"=>bcrypt("twmg#2019")
-//	    ])->each(function($user) use($rep_role){
-//	    	$user->roles()->sync($rep_role);
-//	    });
+	    $rep_user = factory("App\User")->create([
+        	'username'=>'sujan',
+        	"device_id"=>"",
+        	'status'=>'verified',
+	        'email'=>"sujan@twmg.com.au",
+	        "password"=>bcrypt("twmg#2019")
+	    ])->each(function($user) use($admin_role){
+	    	$user->roles()->sync($admin_role);
+	    });
 //
 //	    $contractor_user = factory("App\User")->create([
 //        	'username'=>'isuru',

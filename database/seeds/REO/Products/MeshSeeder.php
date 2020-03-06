@@ -1,10 +1,9 @@
 <?php
 
-use App\Models\Order\orderReoCategory;
 use App\Models\Order\orderReoProducts;
 use Illuminate\Database\Seeder;
 
-class ReoProductsFactory extends Seeder
+class MeshSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,14 +12,15 @@ class ReoProductsFactory extends Seeder
      */
     public function run()
     {
-//        $reo=orderReoProducts::where("slug","")->first();
         //
-//        factory("App\Models\Order\orderReoProducts")->create([
-//            "name"=>"Mesh 6mx2.4m SL81",
-//            "description"=>"Mesh"
-//        ])->save(function($product) use($reo){
-//            $product->orders()->attach($reo);
-//        });
+        $reo=orderReoProducts::where("slug","mesh")->first();
+        //
+        factory("App\Models\Order\orderReoProducts")->create([
+            "name"=>"Mesh 6mx2.4m SL81",
+            "description"=>"Mesh"
+        ])->save(function($product) use($reo){
+            $product->orders()->attach($reo);
+        });
 
 //        factory("App\Models\Order\orderReoProducts")->create([
 //            "name"=>"Mesh 6mx2.4m SL62",
