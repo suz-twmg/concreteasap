@@ -12,10 +12,10 @@ class MeshSeeder extends Seeder
      */
     public function run()
     {
-        //
+
         $reo=orderReoCategory::where("slug","mesh")->first();
         //
-        factory("App\Models\Order\orderReoProducts")->create([
+        factory("\App\Models\Order\orderReoProducts")->create([
             "name"=>"Mesh 6mx2.4m SL81",
             "description"=>"Mesh"
         ])->save(function($product) use($reo){
