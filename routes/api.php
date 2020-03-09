@@ -61,7 +61,7 @@ Route::group([
 
 
 Route::group([
-    'middleware' => ['cors','api', 'jwt.verify'],
+    'middleware' => ['api', 'jwt.verify'],
     'prefix' => 'contractor'
 ], function ($router) {
 
@@ -87,11 +87,11 @@ Route::group([
     Route::post('order/cancelOrder', 'Contractor\OrderController@cancelOrder');
     Route::post('order/archiveOrder', 'Contractor\OrderController@archiveOrder');
 
-    Route::post("order/reo","Contractor\REO\OrderController@create");
-    Route::get("order/reo/pending","Contractor\REO\OrderController@getPending");
-    Route::get("order/reo/{id}/bids","Contractor\REO\OrderController@getBids");
-    Route::get("order/reo/acceptedOrders","Contractor\REO\OrderController@getAcceptedOrders");
-    Route::get("order/reo/getDayOfPourOrders","Contractor\REO\OrderController@getDayOfPourOrders");
+    Route::post("order/reo","Contractor\Reo\OrderController@create");
+    Route::get("order/reo/pending","Contractor\Reo\OrderController@getPending");
+    Route::get("order/reo/{id}/bids","Contractor\ReoOrderController@getBids");
+    Route::get("order/reo/acceptedOrders","Contractor\Reo\OrderController@getAcceptedOrders");
+    Route::get("order/reo/getDayOfPourOrders","Contractor\Reo\OrderController@getDayOfPourOrders");
 
 
 });

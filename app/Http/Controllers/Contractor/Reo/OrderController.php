@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Contractor\REO;
+namespace App\Http\Controllers\Contractor\Reo;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContractReoRequest;
