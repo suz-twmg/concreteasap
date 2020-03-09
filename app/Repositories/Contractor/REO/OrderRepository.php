@@ -10,7 +10,7 @@ use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class OrderRepository implements Interfaces\Contractor\REO\OrderRepositoryInterface
+class OrderRepository implements OrderRepositoryInterface
 {
     private $user;
 
@@ -33,7 +33,7 @@ class OrderRepository implements Interfaces\Contractor\REO\OrderRepositoryInterf
         try {
             DB::beginTransaction();
             $order->save();
-            
+
             if(!empty($order_request['products'])){
                 foreach($order_request['products'] as $product){
                     $order_reo = new OrderReo();

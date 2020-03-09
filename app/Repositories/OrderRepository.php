@@ -77,7 +77,7 @@ class OrderRepository implements Interfaces\OrderRepositoryInterface
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-            $order=null;
+            throw new \Error("The job couldn't be saved at this moment");
         }
         return $order;
     }

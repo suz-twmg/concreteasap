@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Contractor\REO;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContractReoRequest;
-use App\Repositories\Interfaces\OrderRepositoryInterface;
+
+use App\Repositories\Interfaces\Contractor\REO\OrderRepositoryInterface;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -18,6 +19,14 @@ class OrderController extends Controller
     }
 
     public function create(ContractReoRequest $request){
-        
+        try{
+            $this->order_reo->createReo($request);
+            return response()->json(["msg"=>"You have successfully added a new Job."],200);
+        }
+        catch(\Exception $e){
+            return response()->json(["msg"=>$e->getMessage()],400);
+        }
+
     }
+
 }
