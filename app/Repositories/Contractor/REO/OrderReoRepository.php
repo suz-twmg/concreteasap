@@ -29,8 +29,8 @@ class OrderReoRepository implements OrderReoRepositoryInterface
         $order->status = "Pending";
         $order->job_id = $order->generateCustomJobId();
         $order->touch();
-        
-        $order_details = new orderDetails();
+
+        $order_details = new orderDetail();
         $order_details->address = isset($order_request["address"]) ? $order_request["address"] : "";
         $order_details->suburb = $order_request["suburb"];
         $order_details->post_code = isset($order_request["post_code"]) ? $order_request["post_code"] : "";
