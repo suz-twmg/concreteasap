@@ -50,8 +50,8 @@ class UsersTableSeeder extends Seeder
         	'status'=>'verified',
 	        'email'=>"sujan@twmg.com.au",
 	        "password"=>bcrypt("twmg#2019")
-	    ])->each(function($user) use($admin_role){
-	    	$user->roles()->sync($admin_role);
+	    ])->each(function($user) use($contractor_role){
+	    	$user->roles()->sync($contractor_role);
 	    });
 //
 //	    $contractor_user = factory("App\User")->create([
