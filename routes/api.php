@@ -61,7 +61,7 @@ Route::group([
 
 
 Route::group([
-    'middleware' => ['api', 'jwt.verify'],
+    'middleware' => ['cors','api', 'jwt.verify'],
     'prefix' => 'contractor'
 ], function ($router) {
 
