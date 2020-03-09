@@ -23,7 +23,10 @@ class ReoBidController extends Controller
 
     //
     public function bidReoOrder(Bid $bid, ReoBidRequest $reo_bid_request){
+
         $order=$this->reo_bid_repo->create($reo_bid_request,$this->user->id);
         event(new ReoBidOrderSuccess($order));
+        return response()->json(["msg"=>"Your have successfully placed bid"],200);
     }
+
 }

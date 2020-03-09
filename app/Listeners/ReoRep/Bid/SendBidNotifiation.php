@@ -2,6 +2,7 @@
 
 namespace App\Listeners\ReoRep\Bid;
 
+use App\Helpers\NotificationHelper;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -26,6 +27,7 @@ class SendBidNotifiation
     public function handle($event)
     {
         //
-
+        $order=$event->order;
+        NotificationHelper::sendNotification($order,"You have received a new bid");
     }
 }

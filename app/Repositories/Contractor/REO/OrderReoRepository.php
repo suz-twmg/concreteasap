@@ -5,12 +5,12 @@ namespace App\Repositories\Contractor\REO;
 use App\Models\Order\Order;
 use App\Models\Order\orderDetail;
 use App\Models\Order\OrderReo;
-use App\Repositories\Interfaces\Contractor\REO\OrderRepositoryInterface;
+use App\Repositories\Interfaces\Contractor\REO\OrderReoRepositoryInterface;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class OrderRepository implements OrderRepositoryInterface
+class OrderReoRepository implements OrderReoRepositoryInterface
 {
     private $user;
 

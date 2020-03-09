@@ -3,7 +3,7 @@ namespace App\Repositories\Interfaces\Contractor\REO;
 
 use App\Models\Order\Order;
 
-interface OrderRepositoryInterface
+interface OrderReoRepositoryInterface
 {
     function createReo($order_request);
 }
