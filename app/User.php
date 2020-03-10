@@ -145,7 +145,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function routeNotificationForOneSignal()
     {
-        return $this->device_id;
+        return $this->devices;
     }
 
     public function getContractorOrders($status){
@@ -156,6 +156,10 @@ class User extends Authenticatable implements JWTSubject
                 }])->select("id")->get();
             }])->where("status", "!=", "Rejected");
         }])->whereIn("status",$status)->orderBy('id', 'DESC')->get();
+    }
+
+    public function devices(){
+        $this->hasMany("devices");
     }
 
 

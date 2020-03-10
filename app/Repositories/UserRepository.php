@@ -29,8 +29,8 @@ class UserRepository implements Interfaces\UserRepositoryInterface
         $user->email = $user_details["email"];
         $user->password = Hash::make($user_details["password"]);
         $user->status = "verified";
+        $user->external_id=uniqid();
         $user->username = "";
-        $user->device_id = "";
 
 
         $user_detail->company = $user_details["company"];
@@ -68,8 +68,9 @@ class UserRepository implements Interfaces\UserRepositoryInterface
     public function saveDevice(string $device_id, int $user_id)
     {
         $user = User::find($user_id);
-        $user->device_id = $device_id;
-        return $user->save();
+        return $user->devices()->save([
+            "device_id"=>$device_id
+        ]);
     }
 
     public function savePaymentDetail(string $payment_token, int $user_id)

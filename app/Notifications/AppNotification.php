@@ -47,6 +47,7 @@ class AppNotification extends Notification
     public function toOneSignal($notifiable)
     {
         $one_signal=OneSignalMessage::create();
+//        $one_signal->set
         if(isset($this->notification_data["btn"])){
             $one_signal=$one_signal
                 ->setButton(
