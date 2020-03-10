@@ -36,11 +36,11 @@ class Order extends Model
     }
 
     public function orderDetail(){
-        $this->hasOne(orderDetail::class,"order_id","id");
+        return $this->hasOne(orderDetail::class,"order_id","id");
     }
 
     public function orderReo(){
-        return $this->hasMany(orderReo::class);
+        return $this->hasMany(orderReo::class, "order_id","id");
     }
 
     public function user(){
@@ -57,11 +57,6 @@ class Order extends Model
 
     public function message(){
         return $this->hasMany(orderMessage::class,"order_id","id");
-    }
-
-    public function products()
-    {
-        return $this->belongsToMany(orderReoProducts::class, "order_reo");
     }
 
     public function getAcceptedBidUser(){
