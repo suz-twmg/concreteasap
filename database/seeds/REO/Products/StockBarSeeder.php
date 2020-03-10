@@ -2,6 +2,8 @@
 
 use App\Models\Order\orderReoCategory;
 use App\Models\Order\orderReoProducts;
+use App\Models\Order\reoCategories;
+use App\Models\Order\reoProducts;
 use Illuminate\Database\Seeder;
 
 class StockBarSeeder extends Seeder
@@ -14,45 +16,45 @@ class StockBarSeeder extends Seeder
     public function run()
     {
         //
-        $stock_bar=orderReoCategory::where("slug","stock_bar")->first();
+        $stock_bar=reoCategories::where("slug","stock_bar")->first();
 
-        factory(orderReoProducts::class)->create([
+        factory(reoProducts::class)->create([
             "name"=>"N12",
             "description"=>"Stock bar",
             "category_id"=>$stock_bar->id
         ]);
 
-        factory(orderReoProducts::class)->create([
+        factory(reoProducts::class)->create([
             "name"=>"N16",
             "description"=>"Stock bar",
             "category_id"=>$stock_bar->id
         ]);
 
-        factory(orderReoProducts::class)->create([
+        factory(reoProducts::class)->create([
             "name"=>"N20",
             "description"=>"Stock bar",
             "category_id"=>$stock_bar->id
         ]);
 
-        factory(orderReoProducts::class)->create([
+        factory(reoProducts::class)->create([
             "name"=>"N24",
             "description"=>"Stock bar",
             "category_id"=>$stock_bar->id
         ]);
 
-        factory(orderReoProducts::class)->create([
+        factory(reoProducts::class)->create([
             "name"=>"N28",
             "description"=>"Stock bar",
             "category_id"=>$stock_bar->id
         ]);
 
-        factory(orderReoProducts::class)->create([
+        factory(reoProducts::class)->create([
             "name"=>"N32",
             "description"=>"Stock bar",
             "category_id"=>$stock_bar->id
         ]);
 
-        factory(orderReoProducts::class)->create([
+        factory(reoProducts::class)->create([
             "name"=>"N36",
             "description"=>"Stock bar",
             "category_id"=>$stock_bar->id

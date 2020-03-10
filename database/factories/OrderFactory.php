@@ -5,7 +5,7 @@
 use App\Model;
 use Faker\Generator as Faker;
 
-$factory->define(\App\Models\Order\reoProducts::class, function (Faker $faker) {
+$factory->define(\App\Models\Order\Order::class, function (Faker $faker) {
     return [
         //
     ];

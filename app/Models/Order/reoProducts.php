@@ -11,8 +11,8 @@ class reoProducts extends Model
         return $this->belongsTo(reoCategories::class, 'id', 'category_id');
     }
 
-    public function orderReo()
+    public function order()
     {
-        return $this->belongsTo(orderReo::class, 'id', 'product_id');
+        return $this->belongsToMany(Order::class, 'order_reo', "product_id","order_id");
     }
 }

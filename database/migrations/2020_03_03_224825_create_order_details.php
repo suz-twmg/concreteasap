@@ -27,7 +27,6 @@ class CreateOrderDetails extends Migration
             $table->time('time_preference3');
             $table->string('time_deliveries');
             $table->string("urgency");
-            $table->boolean("message_required");
             $table->enum("preference",["On Site","On Call"]);
             $table->text("delivery_instructions");
             $table->text("special_instructions");

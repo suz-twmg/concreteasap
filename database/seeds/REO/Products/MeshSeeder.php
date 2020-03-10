@@ -2,6 +2,8 @@
 
 use App\Models\Order\orderReoCategory;
 use App\Models\Order\orderReoProducts;
+use App\Models\Order\reoCategories;
+use App\Models\Order\reoProducts;
 use Illuminate\Database\Seeder;
 
 class MeshSeeder extends Seeder
@@ -14,69 +16,69 @@ class MeshSeeder extends Seeder
     public function run()
     {
 
-        $reo=orderReoCategory::where("slug","mesh")->first();
+        $reo=reoCategories::where("slug","mesh")->first();
         //
-        factory(orderReoProducts::class)->create([
+        factory(reoProducts::class)->create([
             "name"=>"Mesh 6mx2.4m SL81",
             "description"=>"Mesh",
             "category_id"=>$reo->id
         ]);
 
-        factory("App\Models\Order\orderReoProducts")->create([
+        factory(reoProducts::class)->create([
             "name"=>"Mesh 6mx2.4m SL62",
             "description"=>"Mesh",
             "category_id"=>$reo->id
         ]);
 
-        factory("App\Models\Order\orderReoProducts")->create([
+        factory(reoProducts::class)->create([
             "name"=>"Mesh 6mx2.4m SL72",
             "description"=>"Mesh",
             "category_id"=>$reo->id
         ]);
 
-        factory("App\Models\Order\orderReoProducts")->create([
+        factory(reoProducts::class)->create([
             "name"=>"Mesh 6mx2.4m SL82",
             "description"=>"Mesh",
             "category_id"=>$reo->id
         ]);
 
-        factory("App\Models\Order\orderReoProducts")->create([
+        factory(reoProducts::class)->create([
             "name"=>"Mesh 6mx2.4m SL92",
             "description"=>"Mesh",
             "category_id"=>$reo->id
         ]);
 
-        factory("App\Models\Order\orderReoProducts")->create([
+        factory(reoProducts::class)->create([
             "name"=>"Mesh 6mx2.4m SL102",
             "description"=>"Mesh",
             "category_id"=>$reo->id
         ]);
 
-        factory("App\Models\Order\orderReoProducts")->create([
+        factory(reoProducts::class)->create([
             "name"=>"Mesh 6mx2.4m SL102",
             "description"=>"Mesh",
             "category_id"=>$reo->id
         ]);
 
-        factory("App\Models\Order\orderReoProducts")->create([
+        factory(reoProducts::class)->create([
             "name"=>"UTE MESH 4mx2m SL62",
             "description"=>"Mesh",
             "category_id"=>$reo->id
         ]);
 
-        factory("App\Models\Order\orderReoProducts")->create([
+        factory(reoProducts::class)->create([
             "name"=>"UTE MESH 4mx2m SL72",
             "description"=>"Mesh",
             "category_id"=>$reo->id
         ]);
 
-        factory("App\Models\Order\orderReoProducts")->create([
+        factory(reoProducts::class)->create([
             "name"=>"UTE MESH 4mx2m SL82",
             "description"=>"Mesh",
             "category_id"=>$reo->id
         ]);
 
-        factory("App\Models\Order\orderReoProducts")->create([
+        factory(reoProducts::class)->create([
             "name"=>"UTE MESH 4mx2m SL82",
             "description"=>"Mesh",
             "category_id"=>$reo->id

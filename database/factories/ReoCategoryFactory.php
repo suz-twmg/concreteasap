@@ -5,7 +5,7 @@
 use \App\Models\Order\orderReoCategory;
 use Faker\Generator as Faker;
 
-$factory->define(orderReoCategory::class, function (Faker $faker) {
+$factory->define(\App\Models\Order\reoCategories::class, function (Faker $faker) {
     return [
         //
         'name'=>$faker->name,

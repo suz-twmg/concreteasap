@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Order\reoCategories;
 use Illuminate\Database\Seeder;
 
 class ReoCategoriesSeeder extends Seeder
@@ -12,67 +13,67 @@ class ReoCategoriesSeeder extends Seeder
     public function run()
     {
         //
-        factory("App\Models\Order\orderReoCategory")->create([
+        factory(reoCategories::class)->create([
             "name"=>"mesh",
             "slug"=>"mesh",
             "description"=>"Mesh"
         ]);
 
-        factory("App\Models\Order\orderReoCategory")->create([
+        factory(reoCategories::class)->create([
             "name"=>"Trench Mesh",
             "slug"=>"trench_mesh",
             "description"=>"Trench Mesh"
         ]);
 
-        factory("App\Models\Order\orderReoCategory")->create([
+        factory(reoCategories::class)->create([
             "name"=>"Stock bar",
             "slug"=>"stock_bar",
             "description"=>"Stock Bar"
         ]);
 
-        factory("App\Models\Order\orderReoCategory")->create([
+        factory(reoCategories::class)->create([
             "name"=>"Starter Bar Mesh",
             "slug"=>"starter_bar_mesh",
             "description"=>"Starter Bar Mesh"
         ]);
 
-        factory("App\Models\Order\orderReoCategory")->create([
+        factory(reoCategories::class)->create([
             "name"=>"Ligatures",
             "slug"=>"ligatures",
             "description"=>"Ligatures "
         ]);
 
-        factory("App\Models\Order\orderReoCategory")->create([
+        factory(reoCategories::class)->create([
             "name"=>"Swimming Pool Reo",
             "slug"=>"swimming_pool_reo",
             "description"=>"Swimming Pool Reo"
         ]);
 
-        factory("App\Models\Order\orderReoCategory")->create([
+        factory(reoCategories::class)->create([
             "name"=>"Accessories",
             "slug"=>"accessories",
             "description"=>"Accessories"
         ]);
 
-        factory("App\Models\Order\orderReoCategory")->create([
+        factory(reoCategories::class)->create([
             "name"=>"Accessories Type",
             "slug"=>"accessories_type",
             "description"=>"Abelflex Plain"
         ]);
 
-        factory("App\Models\Order\orderReoCategory")->create([
+        factory(reoCategories::class)->create([
             "name"=>"Bar Chairs",
             "slug"=>"bar_chairs",
             "description"=>"Bar Chairs"
         ]);
 
-        factory("App\Models\Order\orderReoCategory")->create([
+        factory(reoCategories::class)->create([
             "name"=>"Plastic Membrane and Tape",
             "slug"=>"plastic_membrance",
             "description"=>"Swimming Pool Reo"
         ]);
 
-        factory("App\Models\Order\orderReoCategory")->create([
+        factory(reoCategories::class)->create([
             "name"=>"Wire",
             "slug"=>"wire",
             "description"=>"Wire"

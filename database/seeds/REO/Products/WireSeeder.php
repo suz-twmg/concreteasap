@@ -2,6 +2,7 @@
 
 use App\Models\Order\orderReoCategory;
 use App\Models\Order\orderReoProducts;
+use App\Models\Order\reoCategories;
 use Illuminate\Database\Seeder;
 
 class WireSeeder extends Seeder
@@ -14,9 +15,9 @@ class WireSeeder extends Seeder
     public function run()
     {
         //
-        $trench_mesh=orderReoCategory::where("slug","wire")->first();
+        $trench_mesh=reoCategories::where("slug","wire")->first();
 
-        factory(orderReoProducts::class)->create([
+        factory(\App\Models\Order\reoProducts::class)->create([
             "name"=>"REINFORCEMENT TIE WIRES 80M Belt Pack 1.6",
             "description"=>"Wire",
             "category_id"=>$trench_mesh->id

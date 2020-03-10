@@ -2,6 +2,8 @@
 
 use App\Models\Order\orderReoCategory;
 use App\Models\Order\orderReoProducts;
+use App\Models\Order\reoCategories;
+use App\Models\Order\reoProducts;
 use Illuminate\Database\Seeder;
 
 class SwimmingPoolSeeder extends Seeder
@@ -14,15 +16,15 @@ class SwimmingPoolSeeder extends Seeder
     public function run()
     {
         //
-        $swimming_pool_reo=orderReoCategory::where("slug","swimming_pool_reo")->first();
+        $swimming_pool_reo=reoCategories::where("slug","swimming_pool_reo")->first();
 
-        factory(orderReoProducts::class)->create([
+        factory(reoProducts::class)->create([
             "name"=>"S12 6M",
             "description"=>"Swimming Pool Reo",
             "category_id"=>$swimming_pool_reo->id
         ]);
 
-        factory(orderReoProducts::class)->create([
+        factory(reoProducts::class)->create([
             "name"=>"S12 9M",
             "description"=>"Swimming Pool Reo",
             "category_id"=>$swimming_pool_reo->id

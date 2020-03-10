@@ -36,7 +36,7 @@ class UsersTableSeeder extends Seeder
 
         $admin_user = factory("App\User")->create([
         	'username'=>'reggie',
-        	"device_id"=>"",
+        	"external_id"=>"",
         	'status'=>'verified',
 	        'email'=>"reggie@twmg.com.au",
 	        "password"=>bcrypt("twmg#2019")
@@ -46,7 +46,7 @@ class UsersTableSeeder extends Seeder
 
 	    $rep_user = factory("App\User")->create([
         	'username'=>'sujan',
-        	"device_id"=>"",
+        	"external_id"=>"",
         	'status'=>'verified',
 	        'email'=>"sujan@twmg.com.au",
 	        "password"=>bcrypt("twmg#2019")

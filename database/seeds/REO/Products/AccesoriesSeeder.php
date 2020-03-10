@@ -2,6 +2,8 @@
 
 use App\Models\Order\orderReoCategory;
 use App\Models\Order\orderReoProducts;
+use App\Models\Order\reoCategories;
+use App\Models\Order\reoProducts;
 use Illuminate\Database\Seeder;
 
 class AccesoriesSeeder extends Seeder
@@ -14,21 +16,21 @@ class AccesoriesSeeder extends Seeder
     public function run()
     {
         //
-        $accesories=orderReoCategory::where("slug","accessories")->first();
+        $accesories=reoCategories::where("slug","accessories")->first();
 
-        factory(orderReoProducts::class)->create([
+        factory(reoProducts::class)->create([
             "name"=>"Abelflex Plain",
             "description"=>"Accessories",
             "category_id"=>$accesories->id
         ]);
 
-        factory(orderReoProducts::class)->create([
+        factory(reoProducts::class)->create([
             "name"=>"Abelflex Adhesive",
             "description"=>"Accessories",
             "category_id"=>$accesories->id
         ]);
 
-        factory(orderReoProducts::class)->create([
+        factory(reoProducts::class)->create([
             "name"=>"Stiff Mastic Joints",
             "description"=>"Accessories",
             "category_id"=>$accesories->id

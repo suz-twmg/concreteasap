@@ -39,8 +39,8 @@ class Order extends Model
         return $this->hasOne(orderDetail::class,"order_id","id");
     }
 
-    public function orderReo(){
-        return $this->hasMany(orderReo::class, "order_id","id");
+    public function reoProducts(){
+        return $this->belongsToMany(reoProducts::class, "order_reo","order_id","product_id");
     }
 
     public function user(){
