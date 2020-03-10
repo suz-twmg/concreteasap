@@ -67,7 +67,6 @@ class OrderReoRepository implements OrderReoRepositoryInterface
 
             DB::commit();
         } catch (\Exception $e) {
-            return $e->getMessage();
             DB::rollback();
             $order=null;
         }

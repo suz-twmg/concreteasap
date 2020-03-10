@@ -24,8 +24,15 @@ class ContractReoRequest extends FormRequest
     public function rules()
     {
         return [
-            //
-
+            'suburb' => 'required|max:255',
+            'delivery_date' => 'required',
+            "time_preference1" => 'required',
+            "time_preference2" => 'required',
+            "time_preference3" => 'required',
+            "time_deliveries" => 'required',
+            "urgency" => 'required',
+            "preference" => 'required',
+            "products" => 'required'
         ];
     }
 }
