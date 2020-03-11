@@ -13,6 +13,6 @@ class reoProducts extends Model
 
     public function order()
     {
-        return $this->belongsToMany(Order::class, 'order_reo', "product_id","order_id");
+        return $this->belongsToMany(Order::class, 'order_reo', "order_id","product_id");
     }
 }

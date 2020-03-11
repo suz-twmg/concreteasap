@@ -88,6 +88,7 @@ Route::group([
     Route::post('order/archiveOrder', 'Contractor\OrderController@archiveOrder');
 
     Route::post("order/reo","Contractor\Reo\OrderController@create");
+    Route::put("order/reo","Contractor\Reo\OrderController@update");
     Route::get("order/reo/pending","Contractor\Reo\OrderController@getPending");
     Route::get("order/reo/{id}/bids","Contractor\ReoOrderController@getBids");
     Route::get("order/reo/acceptedOrders","Contractor\Reo\OrderController@getAcceptedOrders");
