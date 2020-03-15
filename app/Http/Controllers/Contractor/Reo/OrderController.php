@@ -17,7 +17,7 @@ class OrderController extends Controller
     private $order_reo;
     //
     public function __construct(OrderReoRepositoryInterface $order_reo){
-        $this->user=auth('api')->user();
+//        $this->user=auth('api')->user();
         $this->order_reo=$order_reo;
     }
 
