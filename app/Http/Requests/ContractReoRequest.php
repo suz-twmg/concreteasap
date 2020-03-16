@@ -13,7 +13,7 @@ class ContractReoRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth('api')->check();
+        return false;
     }
 
     /**
