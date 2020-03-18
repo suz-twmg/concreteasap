@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Facades\Validator;
-
+use App\User;
 
 class APILoginController extends Controller
 {
@@ -124,6 +124,11 @@ class APILoginController extends Controller
     {
         $user = auth('api')->user();
         if ($user) {
+            $user_detail = User::find($user_id);
+            if($user_detail){
+                $user_detail->external_id=uniqid();
+                $user_detail->save();
+            }
             $user = $user->load('detail');
             $user->roles = auth('api')->user()->getRoleNames();
             return response()->json($user, 200)->header('Content-type', 'application/json');
