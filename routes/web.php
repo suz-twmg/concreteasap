@@ -24,13 +24,13 @@ Route::get('/',function(){
 });
 
 Route::get('/test',function(\App\Repositories\UserRepository $user_repo){
-    $order_user=$user_repo->getOrderUser(234);
+    $order_user=$user_repo->getOrderUser(126);
     $notification = [
         "msg" => "You have received new bid.",
         "route"=>"ViewBids",
         "btn"=>["id"=>"VIEW_BIDS","text"=>"View Bid"],
         "params"=>array(
-            "order_id"=>234
+            "order_id"=>126
         )
     ];
     Notification::send($order_user, new AppNotification($notification));
