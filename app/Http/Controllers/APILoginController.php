@@ -125,7 +125,7 @@ class APILoginController extends Controller
         $user = auth('api')->user();
         if ($user) {
             $user_detail = User::find($user->id);
-            if($user_detail){
+            if($user_detail===""){
                 $user_detail->external_id=uniqid();
                 $user_detail->save();
             }
