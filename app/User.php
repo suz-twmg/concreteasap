@@ -145,7 +145,8 @@ class User extends Authenticatable implements JWTSubject
 
     public function routeNotificationForOneSignal()
     {
-        return $this->device_id;
+        return ['include_external_user_ids' => [$this->external_id]];
+        //return $this->device_id;
     }
 
     public function getContractorOrders($status){
