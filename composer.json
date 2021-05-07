@@ -16,7 +16,7 @@
         "fideloper/proxy": "^4.0",
         "fzaninotto/faker": "^1.4",
         "laravel-notification-channels/onesignal": "^2.0",
-        "laravel/framework": "6.0.*",
+        "laravel/framework": "6.18.*",
         "laravel/tinker": "^1.0",
         "nao-pon/flysystem-google-drive": "~1.1",
         "rebing/graphql-laravel": "*",
